@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>謎解き #1</title>
+    <title>クリスマスパーティー謎解き</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -13,24 +13,16 @@
     <script type="text/babel">
         const { useState } = React;
 
-        function Puzzle1() {
-            const [answer, setAnswer] = useState('');
-            const [showHint, setShowHint] = useState(false);
-            const [solved, setSolved] = useState(false);
-            const [isWrong, setIsWrong] = useState(false);
-            const [wrongCount, setWrongCount] = useState(0);
-
-            const correctAnswer = 'りんご';
-
-            const checkAnswer = () => {
-                if (answer.trim().toLowerCase() === correctAnswer) {
-                    setSolved(true);
-                } else {
-                    setIsWrong(true);
-                    setWrongCount(wrongCount + 1);
-                    setTimeout(() => setIsWrong(false), 1000);
+        function PuzzleList() {
+            const puzzles = [
+                {
+                    id: 1,
+                    title: "謎解き #1",
+                    description: "赤くて丸い果物の謎",
+                    difficulty: "簡単",
+                    available: true
                 }
-            };
+            ];
 
             return (
                 <div style={{
@@ -40,7 +32,7 @@
                     fontFamily: 'system-ui, -apple-system, sans-serif'
                 }}>
                     <div style={{
-                        maxWidth: '600px',
+                        maxWidth: '800px',
                         margin: '0 auto',
                         background: 'white',
                         borderRadius: '20px',
@@ -49,250 +41,138 @@
                     }}>
                         <div style={{
                             textAlign: 'center',
-                            marginBottom: '30px'
+                            marginBottom: '40px'
                         }}>
-                            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🔍</div>
-                            <h1 style={{ fontSize: '1.8rem', color: '#333', marginBottom: '5px' }}>
-                                謎解き #1
+                            <div style={{ fontSize: '4rem', marginBottom: '15px' }}>🎄</div>
+                            <h1 style={{ 
+                                fontSize: '2.5rem', 
+                                color: '#333', 
+                                marginBottom: '10px',
+                                fontWeight: 'bold'
+                            }}>
+                                クリスマスパーティー謎解き
                             </h1>
                             <div style={{
                                 display: 'inline-block',
-                                padding: '5px 15px',
+                                padding: '8px 20px',
                                 background: '#e3f2fd',
-                                borderRadius: '20px',
-                                fontSize: '0.9rem',
+                                borderRadius: '25px',
+                                fontSize: '1rem',
                                 color: '#1976d2'
                             }}>
-                                スタート地点
+                                🎮 ゲーム選択画面
                             </div>
                         </div>
 
-                        {!solved ? (
-                            <>
-                                {isWrong && (
-                                    <div style={{
-                                        padding: '20px',
-                                        background: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)',
+                        <div style={{
+                            display: 'grid',
+                            gap: '20px',
+                            marginBottom: '30px'
+                        }}>
+                            {puzzles.map(puzzle => (
+                                <div
+                                    key={puzzle.id}
+                                    style={{
+                                        padding: '25px',
+                                        background: puzzle.available 
+                                            ? 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' 
+                                            : 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)',
                                         borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        border: '3px solid #e53935',
-                                        textAlign: 'center',
-                                        animation: 'shake 0.5s'
+                                        border: `3px solid ${puzzle.available ? '#ff9800' : '#bdbdbd'}`,
+                                        cursor: puzzle.available ? 'pointer' : 'not-allowed',
+                                        transition: 'transform 0.2s, box-shadow 0.2s',
+                                        opacity: puzzle.available ? 1 : 0.6
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (puzzle.available) {
+                                            e.target.style.transform = 'translateY(-5px)';
+                                            e.target.style.boxShadow = '0 15px 30px rgba(0,0,0,0.2)';
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (puzzle.available) {
+                                            e.target.style.transform = 'translateY(0)';
+                                            e.target.style.boxShadow = 'none';
+                                        }
+                                    }}
+                                    onClick={() => {
+                                        if (puzzle.available) {
+                                            window.location.href = `./puzzles/${puzzle.id}/`;
+                                        }
+                                    }}
+                                >
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '20px'
                                     }}>
-                                        <div style={{ fontSize: '3rem', marginBottom: '10px' }}>❌</div>
-                                        <h3 style={{ 
-                                            fontSize: '1.3rem',
-                                            color: '#d32f2f',
-                                            marginBottom: '5px'
+                                        <div style={{ fontSize: '3rem' }}>🔍</div>
+                                        <div style={{ flex: 1 }}>
+                                            <h2 style={{ 
+                                                fontSize: '1.5rem', 
+                                                marginBottom: '8px',
+                                                color: puzzle.available ? '#333' : '#777'
+                                            }}>
+                                                {puzzle.title}
+                                            </h2>
+                                            <p style={{
+                                                fontSize: '1rem',
+                                                color: puzzle.available ? '#666' : '#999',
+                                                marginBottom: '10px'
+                                            }}>
+                                                {puzzle.description}
+                                            </p>
+                                            <div style={{
+                                                display: 'inline-block',
+                                                padding: '4px 12px',
+                                                background: puzzle.available ? '#4caf50' : '#9e9e9e',
+                                                color: 'white',
+                                                borderRadius: '15px',
+                                                fontSize: '0.8rem'
+                                            }}>
+                                                難易度: {puzzle.difficulty}
+                                            </div>
+                                        </div>
+                                        <div style={{
+                                            fontSize: '2rem',
+                                            color: puzzle.available ? '#ff9800' : '#bdbdbd'
                                         }}>
-                                            不正解！
-                                        </h3>
-                                        <p style={{ fontSize: '0.9rem', color: '#666' }}>
-                                            もう一度考えてみよう
-                                        </p>
-                                    </div>
-                                )}
-
-                                {wrongCount > 0 && !isWrong && (
-                                    <div style={{
-                                        padding: '10px',
-                                        background: '#fff3e0',
-                                        borderRadius: '10px',
-                                        marginBottom: '15px',
-                                        fontSize: '0.9rem',
-                                        color: '#e65100',
-                                        textAlign: 'center'
-                                    }}>
-                                        挑戦回数: {wrongCount + 1}回目
-                                    </div>
-                                )}
-
-                                <div style={{
-                                    padding: '25px',
-                                    background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
-                                    borderRadius: '15px',
-                                    marginBottom: '25px',
-                                    border: '3px solid #ff9800'
-                                }}>
-                                    <h2 style={{ 
-                                        fontSize: '1.3rem', 
-                                        marginBottom: '20px',
-                                        color: '#333',
-                                        textAlign: 'center'
-                                    }}>
-                                        🍎 謎を解け！
-                                    </h2>
-                                    <div style={{
-                                        fontSize: '1.5rem',
-                                        lineHeight: '2',
-                                        textAlign: 'center',
-                                        color: '#333',
-                                        fontWeight: 'bold',
-                                        padding: '20px',
-                                        background: 'white',
-                                        borderRadius: '10px'
-                                    }}>
-                                        赤くて丸い<br/>
-                                        木になって<br/>
-                                        甘酸っぱい<br/>
-                                        これな〜んだ？
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '20px' }}>
-                                    <input
-                                        type="text"
-                                        value={answer}
-                                        onChange={(e) => setAnswer(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && checkAnswer()}
-                                        placeholder="答えをひらがなで入力"
-                                        style={{
-                                            width: '100%',
-                                            padding: '15px',
-                                            fontSize: '1.1rem',
-                                            border: '2px solid #ddd',
-                                            borderRadius: '10px',
-                                            boxSizing: 'border-box',
-                                            outline: 'none',
-                                            transition: 'border-color 0.3s'
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = '#667eea'}
-                                        onBlur={(e) => e.target.style.borderColor = '#ddd'}
-                                    />
-                                </div>
-
-                                <button
-                                    onClick={checkAnswer}
-                                    style={{
-                                        width: '100%',
-                                        padding: '15px',
-                                        fontSize: '1.1rem',
-                                        fontWeight: 'bold',
-                                        color: 'white',
-                                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                        border: 'none',
-                                        borderRadius: '10px',
-                                        cursor: 'pointer',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    答えを確認
-                                </button>
-
-                                <button
-                                    onClick={() => setShowHint(!showHint)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '12px',
-                                        fontSize: '0.95rem',
-                                        color: '#667eea',
-                                        background: 'white',
-                                        border: '2px solid #667eea',
-                                        borderRadius: '10px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    💡 {showHint ? 'ヒントを隠す' : 'ヒントを見る'}
-                                </button>
-
-                                {showHint && (
-                                    <div style={{
-                                        marginTop: '15px',
-                                        padding: '15px',
-                                        background: '#f0f4ff',
-                                        borderRadius: '10px',
-                                        border: '2px solid #667eea',
-                                        animation: 'fadeIn 0.3s'
-                                    }}>
-                                        <div style={{ fontSize: '0.9rem', color: '#555' }}>
-                                            💡 ヒント: 白雪姫が食べた果物です
+                                            {puzzle.available ? '▶' : '🔒'}
                                         </div>
                                     </div>
-                                )}
-                            </>
-                        ) : (
-                            <div style={{
-                                textAlign: 'center',
-                                animation: 'slideIn 0.5s'
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '20px',
+                            background: '#f8f9fa',
+                            borderRadius: '15px',
+                            border: '2px solid #e9ecef'
+                        }}>
+                            <h3 style={{ 
+                                fontSize: '1.2rem',
+                                marginBottom: '10px',
+                                color: '#495057'
                             }}>
-                                <div style={{ fontSize: '5rem', marginBottom: '20px' }}>🎉</div>
-                                <h2 style={{ 
-                                    fontSize: '2rem', 
-                                    color: '#4CAF50',
-                                    marginBottom: '20px'
-                                }}>
-                                    正解！
-                                </h2>
-                                
-                                <div style={{
-                                    padding: '25px',
-                                    background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
-                                    borderRadius: '15px',
-                                    marginBottom: '25px',
-                                    border: '3px solid #4CAF50'
-                                }}>
-                                    <h3 style={{ 
-                                        fontSize: '1.3rem',
-                                        marginBottom: '15px',
-                                        color: '#333'
-                                    }}>
-                                        📍 次の謎への手がかり
-                                    </h3>
-                                    <div style={{
-                                        fontSize: '1.2rem',
-                                        lineHeight: '1.8',
-                                        color: '#333',
-                                        padding: '20px',
-                                        background: 'white',
-                                        borderRadius: '10px'
-                                    }}>
-                                        次の謎は...<br/>
-                                        <strong style={{ fontSize: '1.4rem', color: '#1976d2' }}>
-                                            キッチン
-                                        </strong><br/>
-                                        の近くにあるよ！
-                                    </div>
-                                </div>
-
-                                <div style={{
-                                    fontSize: '0.9rem',
-                                    color: '#666',
-                                    padding: '15px',
-                                    background: '#f5f5f5',
-                                    borderRadius: '10px'
-                                }}>
-                                    🔎 キッチン周辺を探して、次のNFCタグを見つけよう！
-                                </div>
+                                🎯 謎解きのルール
+                            </h3>
+                            <div style={{
+                                fontSize: '0.9rem',
+                                color: '#6c757d',
+                                lineHeight: '1.6'
+                            }}>
+                                各謎解きを順番にクリアして、次の手がかりを見つけよう！<br/>
+                                正解すると次の場所のヒントが表示されます。
                             </div>
-                        )}
+                        </div>
                     </div>
-
-                    <style>{`
-                        @keyframes slideIn {
-                            from {
-                                opacity: 0;
-                                transform: translateY(-20px);
-                            }
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
-                            }
-                        }
-                        @keyframes fadeIn {
-                            from { opacity: 0; }
-                            to { opacity: 1; }
-                        }
-                        @keyframes shake {
-                            0%, 100% { transform: translateX(0); }
-                            25% { transform: translateX(-10px); }
-                            75% { transform: translateX(10px); }
-                        }
-                    `}</style>
                 </div>
             );
         }
 
-        ReactDOM.render(<Puzzle1 />, document.getElementById('root'));
+        ReactDOM.render(<PuzzleList />, document.getElementById('root'));
     </script>
 </body>
 </html>
