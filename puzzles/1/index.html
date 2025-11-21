@@ -11,7 +11,7 @@
 <body>
     <div id="root"></div>
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
         function Puzzle1() {
             const [answer, setAnswer] = useState('');
@@ -19,17 +19,67 @@
             const [solved, setSolved] = useState(false);
             const [isWrong, setIsWrong] = useState(false);
             const [wrongCount, setWrongCount] = useState(0);
+            const [audioEnabled, setAudioEnabled] = useState(false);
 
             const correctAnswer = 'りんご';
 
+            // Audio setup
+            const sounds = {
+                start: new Audio('../../sounds/start.mp3'),
+                correct: new Audio('../../sounds/correct.mp3'),
+                wrong: new Audio('../../sounds/wrong.mp3'),
+                hint: new Audio('../../sounds/hint.mp3')
+            };
+
+            // Enable audio on first user interaction
+            const enableAudio = () => {
+                if (!audioEnabled) {
+                    setAudioEnabled(true);
+                    // Pre-load all sounds
+                    Object.values(sounds).forEach(sound => {
+                        sound.volume = 0.1;
+                        sound.play().catch(() => {});
+                        sound.pause();
+                        sound.currentTime = 0;
+                        sound.volume = 0.5;
+                    });
+                }
+            };
+
+            const playSound = (soundName) => {
+                if (audioEnabled && sounds[soundName]) {
+                    sounds[soundName].currentTime = 0;
+                    sounds[soundName].play().catch(() => {});
+                }
+            };
+
+            // Play start sound when component loads
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    playSound('start');
+                }, 500);
+                return () => clearTimeout(timer);
+            }, []);
+
             const checkAnswer = () => {
+                enableAudio(); // Enable audio on user interaction
                 if (answer.trim().toLowerCase() === correctAnswer) {
+                    playSound('correct');
                     setSolved(true);
                 } else {
+                    playSound('wrong');
                     setIsWrong(true);
                     setWrongCount(wrongCount + 1);
                     setTimeout(() => setIsWrong(false), 1000);
                 }
+            };
+
+            const toggleHint = () => {
+                enableAudio();
+                if (!showHint) {
+                    playSound('hint');
+                }
+                setShowHint(!showHint);
             };
 
             return (
@@ -180,7 +230,7 @@
                                 </button>
 
                                 <button
-                                    onClick={() => setShowHint(!showHint)}
+                                    onClick={toggleHint}
                                     style={{
                                         width: '100%',
                                         padding: '12px',
