@@ -23,33 +23,83 @@
 
             const correctAnswer = 'りんご';
 
-            // Audio setup
-            const sounds = {
-                start: new Audio('../../sounds/start.mp3'),
-                correct: new Audio('../../sounds/correct.mp3'),
-                wrong: new Audio('../../sounds/wrong.mp3'),
-                hint: new Audio('../../sounds/hint.mp3')
-            };
+            // Web Audio API setup
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
             // Enable audio on first user interaction
             const enableAudio = () => {
-                if (!audioEnabled) {
-                    setAudioEnabled(true);
-                    // Pre-load all sounds
-                    Object.values(sounds).forEach(sound => {
-                        sound.volume = 0.1;
-                        sound.play().catch(() => {});
-                        sound.pause();
-                        sound.currentTime = 0;
-                        sound.volume = 0.5;
+                if (!audioEnabled && audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        setAudioEnabled(true);
                     });
+                } else if (!audioEnabled) {
+                    setAudioEnabled(true);
                 }
             };
 
+            // Generate sounds using Web Audio API
+            const generateSound = (type, frequency, duration) => {
+                if (!audioEnabled || audioContext.state === 'suspended') return;
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = type;
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            };
+
+            const playStartSound = () => {
+                // Pleasant chime sound (C major chord)
+                if (!audioEnabled) return;
+                [523.25, 659.25, 783.99].forEach((freq, i) => {
+                    setTimeout(() => generateSound('sine', freq, 0.5), i * 100);
+                });
+            };
+
+            const playCorrectSound = () => {
+                // Success fanfare (ascending notes)
+                if (!audioEnabled) return;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                    setTimeout(() => generateSound('sine', freq, 0.3), i * 150);
+                });
+            };
+
+            const playWrongSound = () => {
+                // Error buzzer (low frequency)
+                if (!audioEnabled) return;
+                generateSound('square', 200, 0.5);
+                setTimeout(() => generateSound('square', 150, 0.3), 200);
+            };
+
+            const playHintSound = () => {
+                // Gentle pop sound
+                if (!audioEnabled) return;
+                generateSound('sine', 800, 0.2);
+            };
+
             const playSound = (soundName) => {
-                if (audioEnabled && sounds[soundName]) {
-                    sounds[soundName].currentTime = 0;
-                    sounds[soundName].play().catch(() => {});
+                switch(soundName) {
+                    case 'start':
+                        playStartSound();
+                        break;
+                    case 'correct':
+                        playCorrectSound();
+                        break;
+                    case 'wrong':
+                        playWrongSound();
+                        break;
+                    case 'hint':
+                        playHintSound();
+                        break;
                 }
             };
 
