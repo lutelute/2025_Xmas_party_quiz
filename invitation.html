@@ -454,38 +454,195 @@
         .next-button:active {
             transform: scale(1.02);
         }
+        
+        /* ページインジケーター */
+        .page-indicators {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 15;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            transform: scale(1.2);
+        }
+        
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.1);
+        }
+        
+        /* ナビゲーションボタン */
+        .navigation-buttons {
+            position: absolute;
+            bottom: -140px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 15;
+        }
+        
+        .nav-button {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+        
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .nav-button:disabled {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .external-start {
+            margin-left: 10px;
+        }
+        
+        /* スワイプヒント */
+        .swipe-hint {
+            position: absolute;
+            bottom: -180px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: bounce 2s infinite ease-in-out;
+            z-index: 15;
+            text-align: center;
+        }
 
         /* レスポンシブ */
         @media (max-width: 768px) {
+            .container {
+                max-width: 95%;
+            }
+            
             .letter h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+                margin-bottom: 15px;
             }
 
             .letter p {
-                font-size: 1em;
+                font-size: 0.95em;
+                line-height: 1.6;
+                margin-bottom: 12px;
             }
 
             .start-button, .next-button {
-                font-size: 1.2em;
-                padding: 15px 40px;
+                font-size: 1em;
+                padding: 12px 30px;
             }
 
             .santa-signature {
-                font-size: 1.2em;
+                font-size: 1em;
+                margin-top: 15px;
+            }
+            
+            .nav-button {
+                font-size: 0.9em;
+                padding: 10px 20px;
+                min-width: 70px;
+            }
+            
+            .page-indicators {
+                bottom: -70px;
+            }
+            
+            .navigation-buttons {
+                bottom: -120px;
+            }
+            
+            .swipe-hint {
+                bottom: -160px;
+                font-size: 0.8em;
             }
         }
 
         @media (max-width: 480px) {
+            .container {
+                max-width: 98%;
+            }
+            
             .letter {
-                padding: 20px;
+                padding: 15px;
+                top: 8%;
+                bottom: 12%;
             }
 
             .letter h1 {
-                font-size: 1.5em;
+                font-size: 1.4em;
+                margin-bottom: 12px;
             }
 
             .letter p {
+                font-size: 0.85em;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+            
+            .santa-signature {
                 font-size: 0.9em;
+                margin-top: 12px;
+            }
+            
+            .nav-button {
+                font-size: 0.85em;
+                padding: 8px 16px;
+                min-width: 60px;
+            }
+            
+            .navigation-buttons {
+                gap: 10px;
+            }
+            
+            .page-indicators {
+                bottom: -60px;
+            }
+            
+            .navigation-buttons {
+                bottom: -100px;
+            }
+            
+            .swipe-hint {
+                bottom: -140px;
+                font-size: 0.75em;
+            }
+            
+            .indicator {
+                width: 10px;
+                height: 10px;
             }
         }
     </style>
@@ -518,9 +675,6 @@
                                     実は、とても困ったことが<br>
                                     起きてしまいました...
                                 </p>
-                                <button class="next-button" id="nextButton1">
-                                    <span class="button-text">続きを読む 📖</span>
-                                </button>
                             </div>
                             
                             <div id="page2" class="letter-page">
@@ -533,12 +687,6 @@
                                     みなさんの力を借りて<br>
                                     一緒に探してもらえませんか？ ✨
                                 </p>
-                                <button class="next-button" id="nextButton2">
-                                    <span class="button-text">謎解きについて 🔍</span>
-                                </button>
-                                <div style="margin-top: 15px; font-size: 0.9em; color: #666; opacity: 0.8;">
-                                    💡 左右にスワイプでページ切り替え
-                                </div>
                             </div>
                             
                             <div id="page3" class="letter-page">
@@ -554,15 +702,37 @@
                                 <div class="santa-signature">
                                     - サンタクロースより -
                                 </div>
-                                <button class="start-button" id="startButton">
-                                    <span class="button-text">謎解きを始める 🎁</span>
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tap-hint" id="tapHint">✨ タップして ひらいてね ✨</div>
             </div>
+        </div>
+        
+        <!-- ページインジケーター -->
+        <div class="page-indicators" id="pageIndicators" style="display: none;">
+            <div class="indicator active" data-page="1"></div>
+            <div class="indicator" data-page="2"></div>
+            <div class="indicator" data-page="3"></div>
+        </div>
+        
+        <!-- ナビゲーションボタン -->
+        <div class="navigation-buttons" id="navigationButtons" style="display: none;">
+            <button class="nav-button prev-btn" id="prevButton" disabled>
+                <span>← 前へ</span>
+            </button>
+            <button class="nav-button next-btn" id="nextButton">
+                <span>次へ →</span>
+            </button>
+            <button class="start-button external-start" id="externalStartButton" style="display: none;">
+                <span class="button-text">謎解きを始める 🎁</span>
+            </button>
+        </div>
+        
+        <!-- スワイプヒント -->
+        <div class="swipe-hint" id="swipeHint" style="display: none;">
+            💡 左右にスワイプでページ切り替え
         </div>
     </div>
 
@@ -623,20 +793,31 @@
         envelope.addEventListener('click', function(e) {
             if (!this.classList.contains('opened')) {
                 // ボタンクリック以外で封筒を開く
-                const isButton = e.target.classList.contains('next-button') || 
-                               e.target.classList.contains('start-button') ||
-                               e.target.parentElement.classList.contains('next-button') ||
-                               e.target.parentElement.classList.contains('start-button');
+                const isButton = e.target.closest('.next-button') || 
+                               e.target.closest('.start-button') ||
+                               e.target.closest('.nav-button') ||
+                               e.target.closest('.indicator');
                 
                 if (!isButton) {
                     this.classList.add('opened');
                     isEnvelopeOpened = true;
+                    
+                    // UIコントロールを表示
+                    showNavigationUI();
                     
                     // 追加のキラキラエフェクト
                     createTemporarySparkles();
                 }
             }
         });
+        
+        // ナビゲーションUI表示
+        function showNavigationUI() {
+            document.getElementById('pageIndicators').style.display = 'flex';
+            document.getElementById('navigationButtons').style.display = 'flex';
+            document.getElementById('swipeHint').style.display = 'block';
+            updateNavigationState();
+        }
 
         // 一時的なキラキラエフェクト
         function createTemporarySparkles() {
@@ -685,6 +866,7 @@
             if (currentPage < totalPages) {
                 currentPage++;
                 showPage(currentPage);
+                updateNavigationState();
             }
         }
         
@@ -692,42 +874,62 @@
             if (currentPage > 1) {
                 currentPage--;
                 showPage(currentPage);
+                updateNavigationState();
             }
         }
         
-        // 次へボタンのイベントリスナー
+        function goToPage(pageNumber) {
+            if (pageNumber >= 1 && pageNumber <= totalPages) {
+                currentPage = pageNumber;
+                showPage(currentPage);
+                updateNavigationState();
+            }
+        }
+        
+        // ナビゲーション状態更新
+        function updateNavigationState() {
+            // インジケーター更新
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index + 1 === currentPage);
+            });
+            
+            // ボタン状態更新
+            const prevBtn = document.getElementById('prevButton');
+            const nextBtn = document.getElementById('nextButton');
+            const startBtn = document.getElementById('externalStartButton');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.style.display = currentPage === totalPages ? 'none' : 'block';
+            startBtn.style.display = currentPage === totalPages ? 'block' : 'none';
+        }
+        
+        // イベントリスナー設定
         document.addEventListener('DOMContentLoaded', function() {
-            const nextButton1 = document.getElementById('nextButton1');
-            const nextButton2 = document.getElementById('nextButton2');
-            const startButton = document.getElementById('startButton');
+            // ナビゲーションボタン
+            document.getElementById('prevButton').addEventListener('click', function(e) {
+                e.stopPropagation();
+                prevPage();
+            });
             
-            if (nextButton1) {
-                nextButton1.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    nextPage();
-                });
-            }
+            document.getElementById('nextButton').addEventListener('click', function(e) {
+                e.stopPropagation();
+                nextPage();
+            });
             
-            if (nextButton2) {
-                nextButton2.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    nextPage();
-                });
-            }
+            // 外部スタートボタン
+            document.getElementById('externalStartButton').addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('謎解きクエストを開始します！🎄✨');
+                window.location.href = 'index.html';
+            });
             
-            // スタートボタン
-            if (startButton) {
-                startButton.addEventListener('click', function(e) {
+            // インジケータークリック
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                indicator.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    
-                    // ここにゲーム開始の処理を追加
-                    // 例: 次のページに遷移
-                    alert('謎解きクエストを開始します！🎄✨');
-                    
-                    // 実際の使用時は以下のように次のページに遷移
-                    window.location.href = 'index.html';
+                    goToPage(index + 1);
                 });
-            }
+            });
         });
         
         // スワイプ機能の追加
