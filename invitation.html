@@ -390,6 +390,70 @@
             display: none;
         }
 
+        /* 手紙のページ切り替え */
+        .letter-page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .letter-page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .letter-page.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 次へボタン */
+        .next-button {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .next-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .next-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .next-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(52, 152, 219, 0.6);
+        }
+        
+        .next-button:active {
+            transform: scale(1.02);
+        }
+
         /* レスポンシブ */
         @media (max-width: 768px) {
             .letter h1 {
@@ -400,7 +464,7 @@
                 font-size: 1em;
             }
 
-            .start-button {
+            .start-button, .next-button {
                 font-size: 1.2em;
                 padding: 15px 40px;
             }
@@ -443,21 +507,53 @@
                     <div class="envelope-flap"></div>
                     <div class="letter">
                         <div class="letter-content">
-                            <h1>🎅 サンタさんの忘れ物 🎄</h1>
-                            <p>
-                                サンタさんが だいじなものを<br>
-                                わすれていったみたい！
-                            </p>
-                            <p>
-                                いっしょに さがしに<br>
-                                いってくれるかな？ ✨
-                            </p>
-                            <div class="santa-signature">
-                                - サンタクロースより -
+                            <div id="page1" class="letter-page active">
+                                <h1>🎅 サンタさんからの手紙 🎄</h1>
+                                <p>
+                                    みなさん、こんにちは！<br>
+                                    サンタクロースです 🎅
+                                </p>
+                                <p>
+                                    実は、とても困ったことが<br>
+                                    起きてしまいました...
+                                </p>
+                                <button class="next-button" id="nextButton1">
+                                    <span class="button-text">続きを読む 📖</span>
+                                </button>
                             </div>
-                            <button class="start-button" id="startButton">
-                                <span class="button-text">さがしに いこう！ 🎁</span>
-                            </button>
+                            
+                            <div id="page2" class="letter-page">
+                                <h1>🎁 サンタさんの忘れ物</h1>
+                                <p>
+                                    クリスマスの準備をしていたら<br>
+                                    大切なものを落としてしまいました
+                                </p>
+                                <p>
+                                    みなさんの力を借りて<br>
+                                    一緒に探してもらえませんか？ ✨
+                                </p>
+                                <button class="next-button" id="nextButton2">
+                                    <span class="button-text">謎解きについて 🔍</span>
+                                </button>
+                            </div>
+                            
+                            <div id="page3" class="letter-page">
+                                <h1>🧩 謎解きクエスト</h1>
+                                <p>
+                                    いくつかの謎を解いて<br>
+                                    手がかりを集めてください
+                                </p>
+                                <p>
+                                    みんなで協力すれば<br>
+                                    きっと見つかるはずです！
+                                </p>
+                                <div class="santa-signature">
+                                    - サンタクロースより -
+                                </div>
+                                <button class="start-button" id="startButton">
+                                    <span class="button-text">謎解きを始める 🎁</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -552,13 +648,46 @@
             }
         }
 
+        // ページ切り替え機能
+        let currentPage = 1;
+        const totalPages = 3;
+        
+        function showPage(pageNumber) {
+            // 現在のページを非表示
+            document.querySelectorAll('.letter-page').forEach(page => {
+                page.classList.remove('active', 'show');
+            });
+            
+            // 新しいページを表示
+            setTimeout(() => {
+                const newPage = document.getElementById(`page${pageNumber}`);
+                newPage.classList.add('active');
+                setTimeout(() => {
+                    newPage.classList.add('show');
+                }, 50);
+            }, 250);
+        }
+        
+        // 次へボタンのイベントリスナー
+        document.getElementById('nextButton1').addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentPage = 2;
+            showPage(currentPage);
+        });
+        
+        document.getElementById('nextButton2').addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentPage = 3;
+            showPage(currentPage);
+        });
+        
         // スタートボタン
         startButton.addEventListener('click', function(e) {
             e.stopPropagation();
             
             // ここにゲーム開始の処理を追加
             // 例: 次のページに遷移
-            alert('わすれものを さがしに いこう！🎄✨');
+            alert('謎解きクエストを開始します！🎄✨');
             
             // 実際の使用時は以下のように次のページに遷移
             window.location.href = 'index.html';
