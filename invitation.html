@@ -425,6 +425,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            z-index: 10;
         }
         
         .next-button::before {
@@ -535,6 +536,9 @@
                                 <button class="next-button" id="nextButton2">
                                     <span class="button-text">謎解きについて 🔍</span>
                                 </button>
+                                <div style="margin-top: 15px; font-size: 0.9em; color: #666; opacity: 0.8;">
+                                    💡 左右にスワイプでページ切り替え
+                                </div>
                             </div>
                             
                             <div id="page3" class="letter-page">
@@ -615,14 +619,22 @@
 
         // 封筒を開く
         const envelope = document.getElementById('envelope');
-        const startButton = document.getElementById('startButton');
 
         envelope.addEventListener('click', function(e) {
-            if (!this.classList.contains('opened') && e.target !== startButton) {
-                this.classList.add('opened');
+            if (!this.classList.contains('opened')) {
+                // ボタンクリック以外で封筒を開く
+                const isButton = e.target.classList.contains('next-button') || 
+                               e.target.classList.contains('start-button') ||
+                               e.target.parentElement.classList.contains('next-button') ||
+                               e.target.parentElement.classList.contains('start-button');
                 
-                // 追加のキラキラエフェクト
-                createTemporarySparkles();
+                if (!isButton) {
+                    this.classList.add('opened');
+                    isEnvelopeOpened = true;
+                    
+                    // 追加のキラキラエフェクト
+                    createTemporarySparkles();
+                }
             }
         });
 
@@ -668,29 +680,100 @@
             }, 250);
         }
         
+        // ページナビゲーション機能
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+        
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+        
         // 次へボタンのイベントリスナー
-        document.getElementById('nextButton1').addEventListener('click', function(e) {
-            e.stopPropagation();
-            currentPage = 2;
-            showPage(currentPage);
+        document.addEventListener('DOMContentLoaded', function() {
+            const nextButton1 = document.getElementById('nextButton1');
+            const nextButton2 = document.getElementById('nextButton2');
+            const startButton = document.getElementById('startButton');
+            
+            if (nextButton1) {
+                nextButton1.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    nextPage();
+                });
+            }
+            
+            if (nextButton2) {
+                nextButton2.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    nextPage();
+                });
+            }
+            
+            // スタートボタン
+            if (startButton) {
+                startButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // ここにゲーム開始の処理を追加
+                    // 例: 次のページに遷移
+                    alert('謎解きクエストを開始します！🎄✨');
+                    
+                    // 実際の使用時は以下のように次のページに遷移
+                    window.location.href = 'index.html';
+                });
+            }
         });
         
-        document.getElementById('nextButton2').addEventListener('click', function(e) {
-            e.stopPropagation();
-            currentPage = 3;
-            showPage(currentPage);
+        // スワイプ機能の追加
+        let startX = 0;
+        let startY = 0;
+        let isEnvelopeOpened = false;
+        
+        // タッチスタート
+        document.addEventListener('touchstart', function(e) {
+            if (!envelope.classList.contains('opened')) return;
+            
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
         });
         
-        // スタートボタン
-        startButton.addEventListener('click', function(e) {
-            e.stopPropagation();
+        // タッチエンド（スワイプ判定）
+        document.addEventListener('touchend', function(e) {
+            if (!envelope.classList.contains('opened')) return;
             
-            // ここにゲーム開始の処理を追加
-            // 例: 次のページに遷移
-            alert('謎解きクエストを開始します！🎄✨');
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
             
-            // 実際の使用時は以下のように次のページに遷移
-            window.location.href = 'index.html';
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+            
+            // 水平方向のスワイプを優先（縦方向の移動が小さい場合）
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    // 右スワイプ - 前のページ
+                    prevPage();
+                } else {
+                    // 左スワイプ - 次のページ
+                    nextPage();
+                }
+            }
+        });
+        
+        // キーボードナビゲーション
+        document.addEventListener('keydown', function(e) {
+            if (!envelope.classList.contains('opened')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                prevPage();
+            } else if (e.key === 'ArrowRight') {
+                nextPage();
+            }
         });
 
         // 初期化
