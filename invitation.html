@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サンタさんの忘れ物 🎅</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d1b4e 50%, #1a1f3a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* 星空の背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 雪の演出 */
+        .snow {
+            position: fixed;
+            top: -10px;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* キラキラエフェクト */
+        .sparkles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: gold;
+            border-radius: 50%;
+            box-shadow: 0 0 10px gold;
+            animation: sparkle-float 3s infinite ease-in-out;
+        }
+
+        @keyframes sparkle-float {
+            0%, 100% { 
+                opacity: 0; 
+                transform: translateY(0) scale(0);
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateY(-50px) scale(1.5);
+            }
+        }
+
+        /* メインコンテナ */
+        .container {
+            position: relative;
+            z-index: 10;
+            perspective: 1000px;
+            max-width: 90%;
+            width: 600px;
+        }
+
+        /* 封筒 */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            animation: envelope-appear 1s ease-out;
+        }
+
+        @keyframes envelope-appear {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .envelope {
+            width: 100%;
+            aspect-ratio: 1.6;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-back {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c41e3a 0%, #d32f2f 100%);
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .envelope-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.03) 10px,
+                    rgba(255, 255, 255, 0.03) 20px
+                );
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c41e3a 100%);
+            transform-origin: top center;
+            transition: transform 0.8s ease;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+        }
+
+        .envelope-flap::after {
+            content: '🎄';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            animation: icon-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes icon-pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+
+        .envelope.opened .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        /* 手紙 */
+        .letter {
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            right: 5%;
+            bottom: 15%;
+            background: linear-gradient(135deg, #fffef9 0%, #fff8e1 100%);
+            border-radius: 8px;
+            padding: 30px;
+            transform: translateY(0);
+            transition: transform 0.8s ease 0.3s;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .envelope.opened .letter {
+            transform: translateY(-120%);
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(200, 150, 100, 0.05) 2px,
+                    rgba(200, 150, 100, 0.05) 40px
+                );
+            pointer-events: none;
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter h1 {
+            font-family: 'Pacifico', cursive;
+            color: #c41e3a;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: title-appear 1s ease-out 1.5s both;
+        }
+
+        @keyframes title-appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .letter p {
+            color: #2c3e50;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            animation: text-appear 1s ease-out 1.7s both;
+        }
+
+        @keyframes text-appear {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .santa-signature {
+            font-family: 'Pacifico', cursive;
+            color: #c41e3a;
+            font-size: 1.5em;
+            margin-top: 20px;
+            animation: signature-appear 1s ease-out 1.9s both;
+        }
+
+        @keyframes signature-appear {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* スタートボタン */
+        .start-button {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.4em;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 25px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+            transition: all 0.3s ease;
+            animation: button-appear 1s ease-out 2.1s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .start-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(39, 174, 96, 0.6);
+        }
+
+        .start-button:active {
+            transform: scale(1.05);
+        }
+
+        @keyframes button-appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* タップヒント */
+        .tap-hint {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.1em;
+            animation: bounce 2s infinite ease-in-out;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .envelope.opened .tap-hint {
+            display: none;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .letter h1 {
+                font-size: 2em;
+            }
+
+            .letter p {
+                font-size: 1em;
+            }
+
+            .start-button {
+                font-size: 1.2em;
+                padding: 15px 40px;
+            }
+
+            .santa-signature {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter {
+                padding: 20px;
+            }
+
+            .letter h1 {
+                font-size: 1.5em;
+            }
+
+            .letter p {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空 -->
+    <div class="stars" id="stars"></div>
+
+    <!-- 雪 -->
+    <div class="snow" id="snow"></div>
+
+    <!-- キラキラ -->
+    <div class="sparkles" id="sparkles"></div>
+
+    <!-- メインコンテンツ -->
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope" id="envelope">
+                <div class="envelope-back">
+                    <div class="envelope-flap"></div>
+                    <div class="letter">
+                        <div class="letter-content">
+                            <h1>🎅 サンタさんの忘れ物 🎄</h1>
+                            <p>
+                                サンタさんが だいじなものを<br>
+                                わすれていったみたい！
+                            </p>
+                            <p>
+                                いっしょに さがしに<br>
+                                いってくれるかな？ ✨
+                            </p>
+                            <div class="santa-signature">
+                                - サンタクロースより -
+                            </div>
+                            <button class="start-button" id="startButton">
+                                <span class="button-text">さがしに いこう！ 🎁</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tap-hint" id="tapHint">✨ タップして ひらいてね ✨</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 星を生成
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 雪を生成
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snow');
+            const snowflakeCount = 30;
+            const snowflakes = ['❄', '❅', '❆'];
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+                snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        // キラキラを生成
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            const sparkleCount = 20;
+
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+
+        // 封筒を開く
+        const envelope = document.getElementById('envelope');
+        const startButton = document.getElementById('startButton');
+
+        envelope.addEventListener('click', function(e) {
+            if (!this.classList.contains('opened') && e.target !== startButton) {
+                this.classList.add('opened');
+                
+                // 追加のキラキラエフェクト
+                createTemporarySparkles();
+            }
+        });
+
+        // 一時的なキラキラエフェクト
+        function createTemporarySparkles() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'absolute';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.width = '6px';
+                sparkle.style.height = '6px';
+                sparkle.style.background = 'gold';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.boxShadow = '0 0 10px gold';
+                sparkle.style.animation = 'sparkle-float 1.5s ease-out forwards';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '100';
+                container.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1500);
+            }
+        }
+
+        // スタートボタン
+        startButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // ここにゲーム開始の処理を追加
+            // 例: 次のページに遷移
+            alert('わすれものを さがしに いこう！🎄✨');
+            
+            // 実際の使用時は以下のように次のページに遷移
+            window.location.href = 'index.html';
+        });
+
+        // 初期化
+        createStars();
+        createSnowflakes();
+        createSparkles();
+
+        // NFCタグから来た場合のパラメータを確認
+        const urlParams = new URLSearchParams(window.location.search);
+        const cardId = urlParams.get('card');
+        
+        if (cardId) {
+            console.log('NFCカードID:', cardId);
+            // カードIDを使った処理をここに追加
+        }
+    </script>
+</body>
+</html>
