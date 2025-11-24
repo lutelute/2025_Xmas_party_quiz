@@ -230,13 +230,14 @@
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
             
-            // タイムスタンプを追加
+            // タイムスタンプと種別を追加
             data.timestamp = new Date().toLocaleString('ja-JP');
+            data.type = 'registration';
             
             try {
                 // Google Apps Scriptにデータを送信
-                // TODO: ここに実際のGoogle Apps ScriptのWebアプリURLを設定
-                const scriptUrl = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+                // WebアプリURLを設定してください
+                const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec';
                 
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
