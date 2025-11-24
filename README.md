@@ -34,7 +34,6 @@
 - **謎解きゲーム**: https://lutelute.github.io/2025_Xmas_party_quiz/
 
 #### 📊 管理ツール
-- **参加登録フォーム**: https://lutelute.github.io/2025_Xmas_party_quiz/form.html
 - **データ管理**: https://lutelute.github.io/2025_Xmas_party_quiz/spreadsheet.html
 - **Googleスプレッドシート**: [パーティー管理シート](https://docs.google.com/spreadsheets/d/1WYxvbkR39NJSZ3ltivddMzjYQbKcMeS-ZgQvCfLqON8/edit?usp=sharing)
 
@@ -92,22 +91,9 @@ Web Audio APIを使用して以下の音を生成しています：
   <a href="https://lutelute.github.io/2025_Xmas_party_quiz/video/santa_video_final.mp4">ビデオを直接開く</a>
 </video>
 
-## 📝 参加登録フォーム
-
-パーティーに参加される方は以下のフォームからご登録ください：
-
-<iframe 
-  src="https://lutelute.github.io/2025_Xmas_party_quiz/form.html" 
-  width="100%" 
-  height="600"
-  frameborder="0">
-</iframe>
-
-**直接フォームを開く**: [参加登録フォーム](https://lutelute.github.io/2025_Xmas_party_quiz/form.html)
-
 ## 📊 管理用スプレッドシート
 
-パーティーの進行管理用（登録データがリアルタイムで反映されます）：
+パーティーの進行管理用：
 
 <iframe 
   src="https://docs.google.com/spreadsheets/d/1WYxvbkR39NJSZ3ltivddMzjYQbKcMeS-ZgQvCfLqON8/edit?usp=sharing&rm=minimal" 
