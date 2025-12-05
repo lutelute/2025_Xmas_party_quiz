@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひつじ1号 - メールス信号クイズ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FFF8E7;
+            --soft-green: #A8D5BA;
+            --grass-green: #7CB587;
+            --wool-white: #FEFEFE;
+            --sheep-face: #2D2D2D;
+            --pink-cheek: #FFB5B5;
+            --sky-blue: #B8E4F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: linear-gradient(180deg, var(--sky-blue) 0%, var(--cream) 50%, var(--soft-green) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* 雲のアニメーション */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud-1 {
+            width: 100px;
+            height: 40px;
+            top: 5%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cloud-1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 15px;
+        }
+
+        .cloud-1::after {
+            width: 35px;
+            height: 35px;
+            top: -15px;
+            left: 50px;
+        }
+
+        .cloud-2 {
+            width: 80px;
+            height: 32px;
+            top: 12%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .cloud-2::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 12px;
+        }
+
+        .cloud-2::after {
+            width: 28px;
+            height: 28px;
+            top: -12px;
+            left: 40px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(20px) translateY(-5px); }
+            50% { transform: translateX(40px) translateY(0); }
+            75% { transform: translateX(20px) translateY(5px); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sheep-badge {
+            background: var(--grass-green);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--sheep-face);
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-morse {
+            color: #999;
+            font-size: 11px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            word-break: break-all;
+            letter-spacing: 1px;
+        }
+
+        .play-btn-small {
+            display: block;
+            margin: 15px auto 0;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn-small:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+        }
+
+        .play-btn-small:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .play-btn-small.playing {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            animation: pulse-playing 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-playing {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .morse-char {
+            transition: all 0.1s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .morse-char.active {
+            background: var(--grass-green);
+            color: white;
+            font-weight: 700;
+        }
+
+        /* 羊のイラスト */
+        .sheep-container {
+            position: relative;
+            width: 180px;
+            height: 160px;
+            margin: 0 auto 30px;
+        }
+
+        .sheep-body {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: var(--wool-white);
+            border-radius: 50%;
+            top: 55px;
+            left: 30px;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0, 0, 0, 0.05),
+                0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 頭の毛 - 頭の上に配置 */
+        .sheep-wool {
+            position: absolute;
+            width: 35px;
+            height: 30px;
+            background: var(--wool-white);
+            border-radius: 50%;
+            top: 15px;
+            left: 72px;
+            z-index: 1;
+        }
+
+        .sheep-wool::before {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 25px;
+            background: var(--wool-white);
+            border-radius: 50%;
+            top: 5px;
+            left: -20px;
+        }
+
+        .sheep-wool::after {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 25px;
+            background: var(--wool-white);
+            border-radius: 50%;
+            top: 5px;
+            right: -20px;
+        }
+
+        .sheep-head {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            background: var(--sheep-face);
+            border-radius: 50% 50% 45% 45%;
+            top: 35px;
+            left: 65px;
+            z-index: 2;
+        }
+
+        .sheep-ear {
+            position: absolute;
+            width: 22px;
+            height: 12px;
+            background: var(--sheep-face);
+            border-radius: 50%;
+            top: 45px;
+            z-index: 1;
+        }
+
+        .sheep-ear.left { left: 48px; transform: rotate(-30deg); }
+        .sheep-ear.right { left: 112px; transform: rotate(30deg); }
+
+        .sheep-eye {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 55px;
+            z-index: 3;
+        }
+
+        .sheep-eye.left { left: 75px; }
+        .sheep-eye.right { left: 97px; }
+
+        .sheep-eye::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+        }
+
+        .sheep-cheek {
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background: var(--pink-cheek);
+            border-radius: 50%;
+            top: 70px;
+            opacity: 0.7;
+            z-index: 3;
+        }
+
+        .sheep-cheek.left { left: 68px; }
+        .sheep-cheek.right { left: 100px; }
+
+        /* 足 - 体の下に配置 */
+        .sheep-leg {
+            position: absolute;
+            width: 10px;
+            height: 25px;
+            background: var(--sheep-face);
+            border-radius: 5px;
+            bottom: 10px;
+            z-index: 0;
+        }
+
+        .sheep-leg.leg1 { left: 45px; }
+        .sheep-leg.leg2 { left: 62px; }
+        .sheep-leg.leg3 { left: 100px; }
+        .sheep-leg.leg4 { left: 117px; }
+
+        /* NFCタグ */
+        .nfc-tag {
+            position: absolute;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            top: 25px;
+            right: 35px;
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 鳴き声表示 */
+        .speech-bubble {
+            background: white;
+            border: 3px solid var(--grass-green);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: var(--grass-green);
+        }
+
+        .cry-text {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--sheep-face);
+            letter-spacing: 8px;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        .morse-hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .morse-dots {
+            font-size: 24px;
+            letter-spacing: 10px;
+            color: var(--grass-green);
+            font-weight: 900;
+        }
+
+        .play-btn {
+            margin-top: 15px;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 87, 34, 0.4);
+        }
+
+        .play-btn:active {
+            transform: scale(0.98);
+        }
+
+        .play-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 入力フォーム */
+        .input-section {
+            margin-top: 20px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 24px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .answer-input:focus {
+            border-color: var(--grass-green);
+            box-shadow: 0 0 0 4px rgba(124, 181, 135, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--grass-green), var(--soft-green));
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(124, 181, 135, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 結果表示 */
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .result.correct {
+            background: #D4EDDA;
+            color: #155724;
+            display: block;
+            animation: celebrate 0.5s ease-out;
+        }
+
+        .result.incorrect {
+            background: #F8D7DA;
+            color: #721C24;
+            display: block;
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .hint-text {
+            font-size: 13px;
+            color: #888;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .next-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .next-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 165, 0, 0.4);
+        }
+
+        /* 草 */
+        .grass {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--grass-green);
+            z-index: 0;
+        }
+
+        .grass::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: 
+                radial-gradient(ellipse 30px 40px at 15px 40px, var(--grass-green) 70%, transparent 70%),
+                radial-gradient(ellipse 25px 35px at 50px 40px, var(--grass-green) 70%, transparent 70%),
+                radial-gradient(ellipse 30px 40px at 90px 40px, var(--grass-green) 70%, transparent 70%),
+                radial-gradient(ellipse 25px 35px at 130px 40px, var(--grass-green) 70%, transparent 70%),
+                radial-gradient(ellipse 30px 40px at 170px 40px, var(--grass-green) 70%, transparent 70%);
+            background-repeat: repeat-x;
+            background-size: 200px 40px;
+        }
+
+        .other-sheep-link {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .other-sheep-link a {
+            color: var(--grass-green);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .other-sheep-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+
+    <div class="container">
+        <span class="sheep-badge">🏷️ NFC #001</span>
+        <h1>ひつじ1号</h1>
+        <p class="subtitle">この羊の鳴き声を聞いてみよう！</p>
+        <p class="subtitle-morse" id="morseText">
+            <span class="morse-char">メェメェメェメェ</span> <span class="morse-char">メメメェメェ</span> <span class="morse-char">メェメェメメメェ</span> <span class="morse-char">メメェメェメ</span> <span class="morse-char">メェメェメメェメメメ</span> <span class="morse-char">メメメェメェ</span> <span class="morse-char">メメェメ</span> <span class="morse-char">メェメメェメメ</span> <span class="morse-char">メェメェメェメェメメ</span> <span class="morse-char">メェメメェメェメェ</span> <span class="morse-char">メメェメェメェ</span> <span class="morse-char">メェメメェメメ</span> <span class="morse-char">メメェ</span> <span class="morse-char">メメェメメェメェ</span> <span class="morse-char">メメメェメメェ</span> <span class="morse-char">メェメェ</span> <span class="morse-char">メメメェ</span>
+        </p>
+        <button class="play-btn-small" id="questionPlayBtn" onclick="toggleQuestionSound()">🔊 問題文を再生</button>
+
+        <div class="sheep-container">
+            <div class="sheep-leg leg1"></div>
+            <div class="sheep-leg leg2"></div>
+            <div class="sheep-leg leg3"></div>
+            <div class="sheep-leg leg4"></div>
+            <div class="sheep-body"></div>
+            <div class="sheep-wool"></div>
+            <div class="sheep-ear left"></div>
+            <div class="sheep-ear right"></div>
+            <div class="sheep-head"></div>
+            <div class="sheep-eye left"></div>
+            <div class="sheep-eye right"></div>
+            <div class="sheep-cheek left"></div>
+            <div class="sheep-cheek right"></div>
+            <div class="nfc-tag">NFC</div>
+        </div>
+
+        <div class="speech-bubble">
+            <div class="cry-text">メ，メ，メ</div>
+            <div class="morse-hint">
+                <div class="morse-dots">・ ・ ・</div>
+                短く3回鳴いています
+            </div>
+            <button class="play-btn" onclick="playSheepSound()">🔊 鳴き声を聞く</button>
+        </div>
+
+        <div class="input-section">
+            <label class="input-label">2匹の羊が伝えたいメッセージは？</label>
+            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力" maxlength="10" autocomplete="off">
+            <button class="submit-btn" onclick="checkAnswer()">回答する 🐑</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <div class="grass"></div>
+
+    <script>
+        // 音声再生機能
+        function playSound(text, rate, pitch, duration) {
+            return new Promise((resolve) => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP';
+                utterance.rate = rate;
+                utterance.pitch = pitch;
+                utterance.onend = () => setTimeout(resolve, duration);
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        async function playSheepSound() {
+            const btn = document.querySelector('.play-btn');
+            btn.disabled = true;
+            btn.textContent = '🔊 再生中...';
+
+            // S: 短音3回（メッ，メッ，メッ）
+            await playSound('メッ', 1.5, 1.3, 250);
+            await playSound('メッ', 1.5, 1.3, 250);
+            await playSound('メッ', 1.5, 1.3, 250);
+
+            btn.disabled = false;
+            btn.textContent = '🔊 鳴き声を聞く';
+        }
+
+        // 問題文再生の状態管理
+        let isPlayingQuestion = false;
+        let stopRequested = false;
+
+        // 問題文の再生/停止切り替え
+        function toggleQuestionSound() {
+            if (isPlayingQuestion) {
+                // 停止
+                stopRequested = true;
+                speechSynthesis.cancel();
+            } else {
+                // 再生開始
+                playQuestionSound();
+            }
+        }
+
+        // 問題文のメールス信号再生（高速・ハイライト付き）
+        async function playQuestionSound() {
+            const btn = document.getElementById('questionPlayBtn');
+            const chars = document.querySelectorAll('.morse-char');
+            
+            isPlayingQuestion = true;
+            stopRequested = false;
+            btn.textContent = '⏹ 停止';
+            btn.classList.add('playing');
+
+            // 全文字のハイライトをリセット
+            chars.forEach(c => c.classList.remove('active'));
+
+            // 読み上げテキスト（各文字に対応）
+            const morseTexts = [
+                'メーメーメーメー',      // こ
+                'メッメッメーメー',      // の
+                'メーメーメッメッメー',  // ひ
+                'メッメーメーメッ',      // つ
+                'メーメーメッメーメッメッメッ', // じ
+                'メッメッメーメー',      // の
+                'メッメーメッ',          // な
+                'メーメッメーメッメッ',  // き
+                'メーメーメーメーメッメッ', // ご
+                'メーメッメーメーメー',  // え
+                'メッメーメーメー',      // を
+                'メーメッメーメッメッ',  // き
+                'メッメー',              // い
+                'メッメーメッメーメー',  // て
+                'メッメッメーメッメー',  // み
+                'メーメー',              // よ
+                'メッメッメー'           // う
+            ];
+
+            // 各文字を順番に読み上げ＆ハイライト
+            for (let i = 0; i < chars.length; i++) {
+                if (stopRequested) break;
+                
+                chars.forEach(c => c.classList.remove('active'));
+                chars[i].classList.add('active');
+
+                await new Promise((resolve) => {
+                    const utterance = new SpeechSynthesisUtterance(morseTexts[i]);
+                    utterance.lang = 'ja-JP';
+                    utterance.rate = 2.5;
+                    utterance.pitch = 1.3;
+                    utterance.onend = () => setTimeout(resolve, 80);
+                    utterance.onerror = () => resolve();
+                    speechSynthesis.speak(utterance);
+                });
+            }
+
+            // 終了後リセット
+            chars.forEach(c => c.classList.remove('active'));
+            btn.textContent = '🔊 問題文を再生';
+            btn.classList.remove('playing');
+            isPlayingQuestion = false;
+            stopRequested = false;
+        }
+
+        function checkAnswer() {
+            const input = document.getElementById('answerInput');
+            const result = document.getElementById('result');
+            const answer = input.value.trim().toUpperCase();
+
+            if (answer === 'SOS') {
+                // 直接お祝いページへ移動
+                window.location.href = 'celebration.html';
+            } else if (answer === '') {
+                result.className = 'result incorrect';
+                result.textContent = '答えを入力してください 🐑';
+            } else {
+                result.className = 'result incorrect';
+                result.textContent = '違うよ。';
+            }
+        }
+
+        // Enterキーで回答
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>

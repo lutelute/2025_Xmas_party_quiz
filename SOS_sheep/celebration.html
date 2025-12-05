@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 正解！！ - メールス信号クイズ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FFF8E7;
+            --wool-white: #FEFEFE;
+            --sheep-face: #2D2D2D;
+            --pink-cheek: #FFB5B5;
+            --gold: #FFD700;
+            --party-pink: #FF6B9D;
+            --party-blue: #4ECDC4;
+            --party-purple: #A855F7;
+            --party-orange: #FF9F43;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 紙吹雪 */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: confetti-fall linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* メインコンテンツ */
+        .celebration-container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            animation: title-bounce 0.5s ease-out infinite alternate;
+        }
+
+        @keyframes title-bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: var(--gold);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .answer-reveal {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 20px 40px;
+            margin-bottom: 30px;
+            display: inline-block;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .answer-reveal p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .answer-text {
+            font-size: 64px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--party-pink), var(--party-purple), var(--party-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow-shift 2s linear infinite;
+        }
+
+        @keyframes rainbow-shift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 踊る羊のステージ */
+        .dance-floor {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            margin: 20px auto;
+        }
+
+        /* 羊のベーススタイル */
+        .dancing-sheep {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+        .dancing-sheep:hover {
+            animation-duration: 0.2s !important;
+        }
+
+        /* 羊1 - 左で激しく跳ねる */
+        .sheep-1 {
+            left: 5%;
+            bottom: 20px;
+            animation: dance-crazy-jump 0.15s ease-in-out infinite;
+        }
+
+        /* 羊2 - 真ん中で超高速回転 */
+        .sheep-2 {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 20px;
+            animation: dance-crazy-spin 0.2s linear infinite;
+        }
+
+        /* 羊3 - 右で激しく左右に揺れる */
+        .sheep-3 {
+            right: 5%;
+            bottom: 20px;
+            animation: dance-crazy-shake 0.08s ease-in-out infinite alternate;
+        }
+
+        /* 羊4 - 暴れ回る */
+        .sheep-4 {
+            left: 25%;
+            top: 20px;
+            animation: dance-crazy-bounce 0.12s ease-in-out infinite;
+        }
+
+        /* 羊5 - 狂ったように回転しながら移動 */
+        .sheep-5 {
+            right: 20%;
+            top: 30px;
+            animation: dance-crazy-wild 0.25s linear infinite;
+        }
+
+        /* 羊6 - 画面を横断 */
+        .sheep-6 {
+            bottom: 50px;
+            animation: dance-run-across 1.5s linear infinite;
+        }
+
+        /* 羊7 - 逆さまで回転 */
+        .sheep-7 {
+            left: 70%;
+            bottom: 80px;
+            animation: dance-upside-down 0.15s linear infinite;
+        }
+
+        /* 羊8 - 左上でブルブル */
+        .sheep-8 {
+            left: 8%;
+            top: 50px;
+            animation: dance-vibrate 0.05s linear infinite;
+        }
+
+        /* 羊9 - 右上で縦回転 */
+        .sheep-9 {
+            right: 8%;
+            top: 60px;
+            animation: dance-flip 0.3s ease-in-out infinite;
+        }
+
+        /* 羊10 - 中央上で拡大縮小しながら回転 */
+        .sheep-10 {
+            left: 40%;
+            top: 10px;
+            animation: dance-pulse-spin 0.2s ease-in-out infinite;
+        }
+
+        /* 羊11 - 画面を逆方向に横断 */
+        .sheep-11 {
+            top: 100px;
+            animation: dance-run-across-reverse 1.2s linear infinite;
+        }
+
+        /* 羊12 - 真ん中でバウンド */
+        .sheep-12 {
+            left: 55%;
+            bottom: 100px;
+            animation: dance-super-bounce 0.18s ease-in-out infinite;
+        }
+
+        @keyframes dance-crazy-jump {
+            0%, 100% { transform: translateY(0) rotate(-25deg) scale(1); }
+            25% { transform: translateY(-100px) rotate(30deg) scale(1.3); }
+            50% { transform: translateY(-50px) rotate(-20deg) scale(0.8); }
+            75% { transform: translateY(-120px) rotate(35deg) scale(1.2); }
+        }
+
+        @keyframes dance-crazy-spin {
+            0% { transform: translateX(-50%) rotate(0deg) scale(1); }
+            25% { transform: translateX(-50%) rotate(270deg) scale(1.4); }
+            50% { transform: translateX(-50%) rotate(540deg) scale(0.7); }
+            75% { transform: translateX(-50%) rotate(810deg) scale(1.3); }
+            100% { transform: translateX(-50%) rotate(1080deg) scale(1); }
+        }
+
+        @keyframes dance-crazy-shake {
+            0% { transform: translateX(-50px) rotate(-40deg) scale(1.2); }
+            100% { transform: translateX(50px) rotate(40deg) scale(0.8); }
+        }
+
+        @keyframes dance-crazy-bounce {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(40px, -70px) rotate(60deg); }
+            40% { transform: translate(-30px, -40px) rotate(-45deg); }
+            60% { transform: translate(50px, -90px) rotate(80deg); }
+            80% { transform: translate(-40px, -30px) rotate(-60deg); }
+        }
+
+        @keyframes dance-crazy-wild {
+            0% { transform: rotate(0deg) translateY(0) scale(0.7); }
+            25% { transform: rotate(270deg) translateY(-50px) scale(1); }
+            50% { transform: rotate(540deg) translateY(0) scale(0.5); }
+            75% { transform: rotate(810deg) translateY(-70px) scale(0.9); }
+            100% { transform: rotate(1080deg) translateY(0) scale(0.7); }
+        }
+
+        @keyframes dance-run-across {
+            0% { left: -150px; transform: rotate(0deg) scaleX(1); }
+            25% { transform: rotate(-30deg) translateY(-40px) scaleX(1); }
+            50% { transform: rotate(30deg) translateY(0) scaleX(1); }
+            75% { transform: rotate(-30deg) translateY(-40px) scaleX(1); }
+            100% { left: calc(100% + 150px); transform: rotate(0deg) scaleX(1); }
+        }
+
+        @keyframes dance-upside-down {
+            0% { transform: rotate(0deg) scaleY(1); }
+            25% { transform: rotate(90deg) scaleY(-1) scale(1.2); }
+            50% { transform: rotate(180deg) scaleY(-1); }
+            75% { transform: rotate(270deg) scaleY(1) scale(0.8); }
+            100% { transform: rotate(360deg) scaleY(1); }
+        }
+
+        @keyframes dance-vibrate {
+            0% { transform: translate(-3px, -3px) rotate(-5deg); }
+            25% { transform: translate(3px, -3px) rotate(5deg); }
+            50% { transform: translate(3px, 3px) rotate(-5deg); }
+            75% { transform: translate(-3px, 3px) rotate(5deg); }
+            100% { transform: translate(-3px, -3px) rotate(-5deg); }
+        }
+
+        @keyframes dance-flip {
+            0%, 100% { transform: rotateX(0deg) scale(0.8); }
+            50% { transform: rotateX(180deg) scale(1.1); }
+        }
+
+        @keyframes dance-pulse-spin {
+            0% { transform: rotate(0deg) scale(0.6); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(0.5); }
+            75% { transform: rotate(270deg) scale(1.3); }
+            100% { transform: rotate(360deg) scale(0.6); }
+        }
+
+        @keyframes dance-run-across-reverse {
+            0% { right: -150px; left: auto; transform: rotate(0deg) scaleX(-1); }
+            25% { transform: rotate(30deg) translateY(-50px) scaleX(-1); }
+            50% { transform: rotate(-30deg) translateY(0) scaleX(-1); }
+            75% { transform: rotate(30deg) translateY(-50px) scaleX(-1); }
+            100% { right: calc(100% + 150px); left: auto; transform: rotate(0deg) scaleX(-1); }
+        }
+
+        @keyframes dance-super-bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-80px) rotate(180deg) scale(1.3); }
+        }
+
+        /* 羊の部品 */
+        .sheep-body {
+            position: absolute;
+            width: 80px;
+            height: 55px;
+            background: var(--wool-white);
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 
+                inset -5px -5px 15px rgba(0, 0, 0, 0.05),
+                0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sheep-body::before,
+        .sheep-body::after {
+            content: '';
+            position: absolute;
+            background: var(--wool-white);
+            border-radius: 50%;
+        }
+
+        .sheep-body::before {
+            width: 25px;
+            height: 25px;
+            top: -8px;
+            left: 12px;
+        }
+
+        .sheep-body::after {
+            width: 20px;
+            height: 20px;
+            top: -3px;
+            right: 15px;
+        }
+
+        .sheep-head {
+            position: absolute;
+            width: 35px;
+            height: 42px;
+            background: var(--sheep-face);
+            border-radius: 50% 50% 45% 45%;
+            top: 15px;
+            left: 42px;
+            z-index: 2;
+        }
+
+        .sheep-ear {
+            position: absolute;
+            width: 15px;
+            height: 10px;
+            background: var(--sheep-face);
+            border-radius: 50%;
+            top: 25px;
+        }
+
+        .sheep-ear.left { left: 30px; transform: rotate(-30deg); }
+        .sheep-ear.right { right: 30px; transform: rotate(30deg); }
+
+        .sheep-eye {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            top: 35px;
+        }
+
+        .sheep-eye.left { left: 48px; }
+        .sheep-eye.right { left: 66px; }
+
+        .sheep-eye::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            top: 1px;
+            left: 2px;
+        }
+
+        .sheep-cheek {
+            position: absolute;
+            width: 10px;
+            height: 6px;
+            background: var(--pink-cheek);
+            border-radius: 50%;
+            top: 42px;
+            opacity: 0.8;
+        }
+
+        .sheep-cheek.left { left: 43px; }
+        .sheep-cheek.right { left: 67px; }
+
+        .sheep-leg {
+            position: absolute;
+            width: 8px;
+            height: 20px;
+            background: var(--sheep-face);
+            border-radius: 4px;
+            bottom: 5px;
+        }
+
+        .dancing-sheep .sheep-leg:nth-of-type(1) { left: 30px; }
+        .dancing-sheep .sheep-leg:nth-of-type(2) { left: 45px; }
+        .dancing-sheep .sheep-leg:nth-of-type(3) { right: 20px; }
+        .dancing-sheep .sheep-leg:nth-of-type(4) { right: 35px; }
+
+        /* パーティーアイテム */
+        .party-hat {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 25px solid var(--party-pink);
+            top: 0;
+            left: 47px;
+            z-index: 3;
+        }
+
+        .party-hat::after {
+            content: '✨';
+            position: absolute;
+            top: -20px;
+            left: -8px;
+            font-size: 12px;
+        }
+
+        .sheep-2 .party-hat { border-bottom-color: var(--party-blue); }
+        .sheep-3 .party-hat { border-bottom-color: var(--party-orange); }
+        .sheep-4 .party-hat { border-bottom-color: var(--party-purple); }
+        .sheep-5 .party-hat { border-bottom-color: var(--gold); }
+        .sheep-6 .party-hat { border-bottom-color: #FF6B6B; }
+        .sheep-7 .party-hat { border-bottom-color: #48BB78; }
+        .sheep-8 .party-hat { border-bottom-color: #F472B6; }
+        .sheep-9 .party-hat { border-bottom-color: #38BDF8; }
+        .sheep-10 .party-hat { border-bottom-color: #FBBF24; }
+        .sheep-11 .party-hat { border-bottom-color: #E879F9; }
+        .sheep-12 .party-hat { border-bottom-color: #34D399; }
+
+        /* 音符 */
+        .music-notes {
+            position: absolute;
+            font-size: 30px;
+            animation: float-notes 1s ease-in-out infinite;
+        }
+
+        .note-1 { top: -20px; left: 0; animation-delay: 0s; }
+        .note-2 { top: -30px; right: 0; animation-delay: 0.3s; }
+        .note-3 { top: 0; left: -20px; animation-delay: 0.6s; }
+
+        @keyframes float-notes {
+            0%, 100% { transform: translateY(0) rotate(-10deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(10deg); opacity: 0.5; }
+        }
+
+        /* 次へボタン */
+        .next-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--gold), var(--party-orange));
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(255, 159, 67, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse-btn 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-btn {
+            from { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 159, 67, 0.4); }
+            to { transform: scale(1.05); box-shadow: 0 8px 30px rgba(255, 159, 67, 0.6); }
+        }
+
+        .next-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* ディスコライト */
+        .disco-light {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: disco-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .light-1 {
+            background: var(--party-pink);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .light-2 {
+            background: var(--party-blue);
+            top: 20%;
+            right: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .light-3 {
+            background: var(--party-purple);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 1s;
+        }
+
+        .light-4 {
+            background: var(--party-orange);
+            bottom: 10%;
+            right: 20%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes disco-pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.5); opacity: 0.6; }
+        }
+
+        /* 床 */
+        .dance-floor-ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(135deg, 
+                #1a1a2e 0%, 
+                #16213e 50%, 
+                #1a1a2e 100%);
+            border-top: 4px solid var(--gold);
+        }
+
+        .dance-floor-ground::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 50px,
+                rgba(255,255,255,0.05) 50px,
+                rgba(255,255,255,0.05) 100px
+            );
+        }
+    </style>
+</head>
+<body>
+    <!-- ディスコライト -->
+    <div class="disco-light light-1"></div>
+    <div class="disco-light light-2"></div>
+    <div class="disco-light light-3"></div>
+    <div class="disco-light light-4"></div>
+
+    <!-- 紙吹雪（JSで生成） -->
+
+    <div class="celebration-container">
+        <h1 class="title">🎉 正解！！ 🎉</h1>
+        <p class="subtitle">メールス信号を解読できました！</p>
+
+        <div class="answer-reveal">
+            <p>2匹の羊が伝えたかったメッセージは...</p>
+            <div class="answer-text">SOS</div>
+            <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                S(・・・) + O(ーーー) + S(・・・)<br>
+                メ,メ,メ + メェー,メェー,メェー + メ,メ,メ
+            </p>
+        </div>
+
+        <div class="dance-floor">
+            <!-- 羊1 -->
+            <div class="dancing-sheep sheep-1">
+                <div class="party-hat"></div>
+                <span class="music-notes note-1">♪</span>
+                <span class="music-notes note-2">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊2 -->
+            <div class="dancing-sheep sheep-2">
+                <div class="party-hat"></div>
+                <span class="music-notes note-1">♫</span>
+                <span class="music-notes note-3">♪</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊3 -->
+            <div class="dancing-sheep sheep-3">
+                <div class="party-hat"></div>
+                <span class="music-notes note-2">♪</span>
+                <span class="music-notes note-1">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊4 -->
+            <div class="dancing-sheep sheep-4">
+                <div class="party-hat"></div>
+                <span class="music-notes note-3">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊5 -->
+            <div class="dancing-sheep sheep-5">
+                <div class="party-hat"></div>
+                <span class="music-notes note-1">♪</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊6 - 走り抜ける -->
+            <div class="dancing-sheep sheep-6">
+                <div class="party-hat"></div>
+                <span class="music-notes note-2">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊7 - 逆さま回転 -->
+            <div class="dancing-sheep sheep-7">
+                <div class="party-hat"></div>
+                <span class="music-notes note-3">♪</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊8 - ブルブル -->
+            <div class="dancing-sheep sheep-8">
+                <div class="party-hat"></div>
+                <span class="music-notes note-1">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊9 - 縦回転 -->
+            <div class="dancing-sheep sheep-9">
+                <div class="party-hat"></div>
+                <span class="music-notes note-2">♪</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊10 - 拡大縮小回転 -->
+            <div class="dancing-sheep sheep-10">
+                <div class="party-hat"></div>
+                <span class="music-notes note-3">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊11 - 逆方向横断 -->
+            <div class="dancing-sheep sheep-11">
+                <div class="party-hat"></div>
+                <span class="music-notes note-1">♪</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <!-- 羊12 - スーパーバウンド -->
+            <div class="dancing-sheep sheep-12">
+                <div class="party-hat"></div>
+                <span class="music-notes note-2">♫</span>
+                <div class="sheep-ear left"></div>
+                <div class="sheep-ear right"></div>
+                <div class="sheep-head"></div>
+                <div class="sheep-eye left"></div>
+                <div class="sheep-eye right"></div>
+                <div class="sheep-cheek left"></div>
+                <div class="sheep-cheek right"></div>
+                <div class="sheep-body"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+                <div class="sheep-leg"></div>
+            </div>
+
+            <div class="dance-floor-ground"></div>
+        </div>
+
+        <a href="next-quiz.html" class="next-btn">次のクイズへ →</a>
+    </div>
+
+    <script>
+        // 紙吹雪を生成
+        function createConfetti() {
+            const colors = ['#FF6B9D', '#4ECDC4', '#A855F7', '#FF9F43', '#FFD700', '#FF6B6B', '#48BB78'];
+            const container = document.body;
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                
+                // ランダムな形
+                if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '50%';
+                } else {
+                    confetti.style.width = '8px';
+                    confetti.style.height = '16px';
+                }
+                
+                container.appendChild(confetti);
+            }
+        }
+
+        // お祝いの音声
+        function playCelebration() {
+            const utterance = new SpeechSynthesisUtterance('やったー！正解！メェーメェーメェー！');
+            utterance.lang = 'ja-JP';
+            utterance.rate = 1.2;
+            utterance.pitch = 1.5;
+            speechSynthesis.speak(utterance);
+        }
+
+        // 初期化
+        createConfetti();
+        setTimeout(playCelebration, 500);
+    </script>
+</body>
+</html>
