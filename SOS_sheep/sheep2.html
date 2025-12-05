@@ -705,7 +705,7 @@
         </div>
 
         <div class="input-section">
-            <label class="input-label">2匹の羊が伝えたいメッセージは？</label>
+            <label class="input-label">2匹の羊が伝えたいメセージは？</label>
             <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力" maxlength="10" autocomplete="off">
             <button class="submit-btn" onclick="checkAnswer()">回答する 🐑</button>
         </div>
@@ -745,10 +745,10 @@
             // 少し間を空ける
             await new Promise(r => setTimeout(r, 500));
 
-            // S: 短音3回「めっ」
-            await playSound('めっ', 1.0, 1.3, 300);
-            await playSound('めっ', 1.0, 1.3, 300);
-            await playSound('めっ', 1.0, 1.3, 300);
+            // S: 短音3回「め」
+            await playSound('め', 1.0, 1.3, 300);
+            await playSound('め', 1.0, 1.3, 300);
+            await playSound('め', 1.0, 1.3, 300);
 
             btn.disabled = false;
             btn.textContent = '🔊 鳴き声を聞く';
@@ -786,22 +786,22 @@
             // 読み上げテキスト（各文字に対応）
             const morseTexts = [
                 'メーメーメーメー',      // こ
-                'メッメッメーメー',      // の
-                'メーメーメッメッメー',  // ひ
-                'メッメーメーメッ',      // つ
-                'メーメーメッメーメッメッメッ', // じ
-                'メッメッメーメー',      // の
-                'メッメーメッ',          // な
-                'メーメッメーメッメッ',  // き
-                'メーメーメーメーメッメッ', // ご
-                'メーメッメーメーメー',  // え
-                'メッメーメーメー',      // を
-                'メーメッメーメッメッ',  // き
-                'メッメー',              // い
-                'メッメーメッメーメー',  // て
-                'メッメッメーメッメー',  // み
+                'メメメーメー',      // の
+                'メーメーメメメー',  // ひ
+                'メメーメーメ',      // つ
+                'メーメーメメーメメメ', // じ
+                'メメメーメー',      // の
+                'メメーメ',          // な
+                'メーメメーメメ',  // き
+                'メーメーメーメーメメ', // ご
+                'メーメメーメーメー',  // え
+                'メメーメーメー',      // を
+                'メーメメーメメ',  // き
+                'メメー',              // い
+                'メメーメメーメー',  // て
+                'メメメーメメー',  // み
                 'メーメー',              // よ
-                'メッメッメー'           // う
+                'メメメー'           // う
             ];
 
             // 各文字を順番に読み上げ＆ハイライト
@@ -814,7 +814,7 @@
                 await new Promise((resolve) => {
                     const utterance = new SpeechSynthesisUtterance(morseTexts[i]);
                     utterance.lang = 'ja-JP';
-                    utterance.rate = 2.5;
+                    utterance.rate = 1.0;
                     utterance.pitch = 1.3;
                     utterance.onend = () => setTimeout(resolve, 80);
                     utterance.onerror = () => resolve();
