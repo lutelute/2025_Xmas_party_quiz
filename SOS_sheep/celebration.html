@@ -606,17 +606,13 @@
 
             /* 羊のサイズを小さく */
             .dancing-sheep {
-                transform: scale(0.6);
+                transform: scale(0.8);
             }
 
-            .sheep-1, .sheep-2, .sheep-3, .sheep-4, .sheep-5,
-            .sheep-6, .sheep-7, .sheep-8, .sheep-9, .sheep-10,
-            .sheep-11, .sheep-12 {
+            /* 一部の羊を非表示にして軽量化 */
+            .sheep-4, .sheep-5, .sheep-6, .sheep-7, .sheep-8,
+            .sheep-9, .sheep-10, .sheep-11, .sheep-12 {
                 display: none;
-            }
-
-            .sheep-1, .sheep-2, .sheep-3 {
-                display: block;
             }
 
             /* ディスコライトを控えめに */
@@ -657,10 +653,10 @@
 
             /* さらに羊を減らす */
             .dancing-sheep {
-                transform: scale(0.4);
+                transform: scale(0.6);
             }
 
-            .sheep-2, .sheep-3 {
+            .sheep-3 {
                 display: none;
             }
 
