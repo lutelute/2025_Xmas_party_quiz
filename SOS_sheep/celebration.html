@@ -31,9 +31,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
+            justify-content: flex-start;
+            padding: 20px 20px 100px;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -61,6 +61,7 @@
         .celebration-container {
             text-align: center;
             z-index: 10;
+            margin: 40px 0;
         }
 
         .title {
@@ -567,8 +568,9 @@
         /* レスポンシブデザイン */
         @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 10px 10px 100px;
                 overflow-x: hidden;
+                justify-content: flex-start;
             }
 
             .title {
