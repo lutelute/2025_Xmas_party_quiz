@@ -563,6 +563,110 @@
                 rgba(255,255,255,0.05) 100px
             );
         }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                overflow-x: hidden;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .answer-reveal {
+                padding: 15px 25px;
+                margin-bottom: 20px;
+            }
+
+            .answer-reveal p {
+                font-size: 16px;
+            }
+
+            .answer-text {
+                font-size: 28px;
+            }
+
+            .navigation {
+                margin-top: 20px;
+            }
+
+            .back-link, .next-link {
+                padding: 10px 20px;
+                font-size: 14px;
+                margin: 5px;
+            }
+
+            /* 羊のサイズを小さく */
+            .dancing-sheep {
+                transform: scale(0.6);
+            }
+
+            .sheep-1, .sheep-2, .sheep-3, .sheep-4, .sheep-5,
+            .sheep-6, .sheep-7, .sheep-8, .sheep-9, .sheep-10,
+            .sheep-11, .sheep-12 {
+                display: none;
+            }
+
+            .sheep-1, .sheep-2, .sheep-3 {
+                display: block;
+            }
+
+            /* ディスコライトを控えめに */
+            .disco-light {
+                transform: scale(0.7);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .answer-reveal {
+                padding: 12px 20px;
+                margin-bottom: 15px;
+            }
+
+            .answer-reveal p {
+                font-size: 14px;
+            }
+
+            .answer-text {
+                font-size: 20px;
+            }
+
+            .back-link, .next-link {
+                padding: 8px 16px;
+                font-size: 13px;
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+
+            /* さらに羊を減らす */
+            .dancing-sheep {
+                transform: scale(0.4);
+            }
+
+            .sheep-2, .sheep-3 {
+                display: none;
+            }
+
+            /* 紙吹雪も控えめに */
+            .confetti:nth-child(odd) {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
