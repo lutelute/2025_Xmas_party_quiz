@@ -36,6 +36,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Apple Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/apple_puzzle/
 - **Autumn Cipher**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/autumn_cipher/momiji.html
 - **SOS Morse Sheep**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/morse_sheep/sheep1.html
+- **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
 - **データ管理**: https://lutelute.github.io/2025_Xmas_party_quiz/others/spreadsheet.html
@@ -62,10 +63,12 @@ cd 2025_Xmas_party_quiz
 │   │   └── index.html  # Apple puzzle game
 │   ├── autumn_cipher/  # Autumn leaf cipher puzzle
 │   │   └── momiji.html # Autumn cipher decryption game
-│   └── morse_sheep/    # SOS sheep morse code puzzle
-│       ├── sheep1.html # Sheep 1 page
-│       ├── sheep2.html # Sheep 2 page
-│       └── celebration.html # Success celebration page
+│   ├── morse_sheep/    # SOS sheep morse code puzzle
+│   │   ├── sheep1.html # Sheep 1 page
+│   │   ├── sheep2.html # Sheep 2 page
+│   │   └── celebration.html # Success celebration page
+│   └── treasure_final/ # Final treasure chest puzzle
+│       └── index.html  # Treasure unlocking game
 ├── resources/          # Media and asset files
 │   ├── video/          # Video files
 │   │   ├── santa_video_final.mp4

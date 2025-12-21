@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏴‍☠️ 最後の試練 - 宝箱の解錠</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8d5b7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            color: #ffd700;
+        }
+
+        .hint-comment {
+            text-align: center;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px dashed rgba(255, 215, 0, 0.5);
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin: 0 auto 20px;
+            max-width: 500px;
+            font-size: 0.95rem;
+            color: #ffd700;
+        }
+
+        .hint-comment::before {
+            content: '💡 ';
+        }
+
+        .treasure-box {
+            background: linear-gradient(145deg, #8b4513, #654321);
+            border: 8px solid #ffd700;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .treasure-box::before {
+            content: '🔒';
+            font-size: 3rem;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+
+        .treasure-box.unlocked::before {
+            content: '🔓';
+            animation: unlock 0.5s ease-out;
+        }
+
+        @keyframes unlock {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(-20deg); }
+            100% { transform: translateX(-50%) rotate(0deg); }
+        }
+
+        .code-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0 20px;
+        }
+
+        .code-digit {
+            width: 70px;
+            height: 90px;
+            background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .code-digit.solved {
+            background: linear-gradient(180deg, #2d4a2d, #1a3a1a);
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(0, 255, 0, 0.3); }
+            to { box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 20px rgba(0, 255, 0, 0.6); }
+        }
+
+        .fragments-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .fragment {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .fragment.active {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .fragment.completed {
+            border-color: #4ade80;
+            background: rgba(0, 100, 0, 0.2);
+        }
+
+        .fragment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .fragment-icon {
+            font-size: 2rem;
+        }
+
+        .fragment-title {
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+
+        .fragment-subtitle {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-left: auto;
+        }
+
+        .level-indicator {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .level-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #444;
+            transition: all 0.3s ease;
+        }
+
+        .level-dot.active {
+            background: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .level-dot.failed {
+            background: #ef4444;
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .question-level {
+            font-size: 0.8rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .question-level::before {
+            content: '⚡';
+        }
+
+        .question-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #e8d5b7;
+        }
+
+        /* Ruby styling */
+        ruby {
+            ruby-position: over;
+        }
+
+        rt {
+            font-size: 0.6em;
+            color: #a0a0a0;
+        }
+
+        .answer-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .answer-input {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffd700;
+            text-align: center;
+            outline: none;
+        }
+
+        .answer-input:focus {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .submit-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: linear-gradient(145deg, #ffd700, #b8860b);
+            border: none;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .submit-btn:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hint-btn {
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            background: transparent;
+            border: 2px solid #a0a0a0;
+            border-radius: 8px;
+            color: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hint-btn:hover {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            display: block;
+            background: rgba(0, 200, 0, 0.2);
+            border: 1px solid #4ade80;
+            color: #4ade80;
+        }
+
+        .feedback.wrong {
+            display: block;
+            background: rgba(200, 0, 0, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .completion-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .completion-overlay.show {
+            display: flex;
+        }
+
+        .completion-content {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+        }
+
+        .completion-content h2 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .completion-content .treasure-icon {
+            font-size: 8rem;
+            margin: 30px 0;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .completion-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #e8d5b7;
+        }
+
+        .sparkles {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(180deg); opacity: 0; }
+        }
+
+        .math-formula {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .code-digit { width: 60px; height: 75px; font-size: 2.5rem; }
+            .fragment { padding: 15px; }
+            .answer-section { flex-direction: column; }
+            .answer-input, .submit-btn, .hint-btn { width: 100%; }
+            .fragment-title { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏴‍☠️ <ruby>最後<rt>さいご</rt></ruby>の<ruby>試練<rt>しれん</rt></ruby> ⚔️</h1>
+        
+        <div class="hint-comment">
+            <ruby>難<rt>むずか</rt></ruby>しかったら「<ruby>降参<rt>こうさん</rt></ruby>」を<ruby>押<rt>お</rt></ruby>すと<ruby>簡単<rt>かんたん</rt></ruby>な<ruby>問題<rt>もんだい</rt></ruby>になるよ！
+        </div>
+        
+        <div class="treasure-box" id="treasureBox">
+            <p style="text-align: center; margin-bottom: 10px; color: #a0a0a0;"><ruby>解錠<rt>かいじょう</rt></ruby><ruby>番号<rt>ばんごう</rt></ruby></p>
+            <div class="code-display">
+                <div class="code-digit" id="digit1">?</div>
+                <div class="code-digit" id="digit2">?</div>
+                <div class="code-digit" id="digit3">?</div>
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; color: #a0a0a0;">3つの<ruby>断片<rt>だんぺん</rt></ruby>を<ruby>集<rt>あつ</rt></ruby>めよ</p>
+        </div>
+
+        <div class="fragments-container">
+            <!-- Fragment 1 -->
+            <div class="fragment active" id="fragment1">
+                <div class="fragment-header">
+                    <span class="fragment-icon">🛡️</span>
+                    <span class="fragment-title"><ruby>第一<rt>だいいち</rt></ruby>の<ruby>断片<rt>だんぺん</rt></ruby>「<ruby>対<rt>つい</rt></ruby>を<ruby>成<rt>な</rt></ruby>す<ruby>世界<rt>せかい</rt></ruby>の<ruby>理<rt>ことわり</rt></ruby>」</span>
+                    <span class="fragment-subtitle" id="level1">Lvl.4</span>
+                </div>
+                <div class="level-indicator" id="levelIndicator1">
+                    <div class="level-dot active"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                </div>
+                <div class="question-box">
+                    <div class="question-level"><ruby>難易度<rt>なんいど</rt></ruby> <span id="diffLabel1">4</span></div>
+                    <p class="question-text" id="question1"><ruby>数学界<rt>すうがくかい</rt></ruby>の<ruby>未解決難問<rt>みかいけつなんもん</rt></ruby>「ゴールドバッハ<ruby>予想<rt>よそう</rt></ruby>」において、<ruby>全<rt>すべ</rt></ruby>ての<ruby>偶数<rt>ぐうすう</rt></ruby>を<ruby>形作<rt>かたちづく</rt></ruby>る<ruby>最小<rt>さいしょう</rt></ruby>の<ruby>素数<rt>そすう</rt></ruby>は？</p>
+                </div>
+                <div class="answer-section">
+                    <input type="text" class="answer-input" id="answer1" placeholder="答えを入力..." autocomplete="off">
+                    <button class="submit-btn" id="submit1" onclick="checkAnswer(1)"><ruby>解答<rt>かいとう</rt></ruby></button>
+                    <button class="hint-btn" id="hint1" onclick="showHint(1)">💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+
+            <!-- Fragment 2 -->
+            <div class="fragment" id="fragment2">
+                <div class="fragment-header">
+                    <span class="fragment-icon">⚖️</span>
+                    <span class="fragment-title"><ruby>第二<rt>だいに</rt></ruby>の<ruby>断片<rt>だんぺん</rt></ruby>「<ruby>一桁<rt>ひとけた</rt></ruby>の<ruby>極<rt>きわ</rt></ruby>みに<ruby>君臨<rt>くんりん</rt></ruby>する<ruby>数<rt>かず</rt></ruby>」</span>
+                    <span class="fragment-subtitle" id="level2">Lvl.4</span>
+                </div>
+                <div class="level-indicator" id="levelIndicator2">
+                    <div class="level-dot active"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                </div>
+                <div class="question-box">
+                    <div class="question-level"><ruby>難易度<rt>なんいど</rt></ruby> <span id="diffLabel2">4</span></div>
+                    <p class="question-text" id="question2"><ruby>全<rt>すべ</rt></ruby>ての<ruby>元素<rt>げんそ</rt></ruby>の<ruby>中<rt>なか</rt></ruby>で<ruby>最<rt>もっと</rt></ruby>も<ruby>強<rt>つよ</rt></ruby>い「<ruby>電気陰性度<rt>でんきいんせいど</rt></ruby>」を<ruby>持<rt>も</rt></ruby>ち、<ruby>他<rt>ほか</rt></ruby>の<ruby>物質<rt>ぶっしつ</rt></ruby>から<ruby>電子<rt>でんし</rt></ruby>を<ruby>奪<rt>うば</rt></ruby>い<ruby>去<rt>さ</rt></ruby>る<ruby>原子番号<rt>げんしばんごう</rt></ruby>9の<ruby>元素<rt>げんそ</rt></ruby>は？</p>
+                </div>
+                <div class="answer-section">
+                    <input type="text" class="answer-input" id="answer2" placeholder="答えを入力..." autocomplete="off" disabled>
+                    <button class="submit-btn" id="submit2" onclick="checkAnswer(2)" disabled><ruby>解答<rt>かいとう</rt></ruby></button>
+                    <button class="hint-btn" id="hint2" onclick="showHint(2)" disabled>💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                </div>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+
+            <!-- Fragment 3 -->
+            <div class="fragment" id="fragment3">
+                <div class="fragment-header">
+                    <span class="fragment-icon">🕯️</span>
+                    <span class="fragment-title"><ruby>第三<rt>だいさん</rt></ruby>の<ruby>断片<rt>だんぺん</rt></ruby>「<ruby>特異点<rt>とくいてん</rt></ruby>としての<ruby>孤独<rt>こどく</rt></ruby>」</span>
+                    <span class="fragment-subtitle" id="level3">Lvl.4</span>
+                </div>
+                <div class="level-indicator" id="levelIndicator3">
+                    <div class="level-dot active"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                    <div class="level-dot"></div>
+                </div>
+                <div class="question-box">
+                    <div class="question-level"><ruby>難易度<rt>なんいど</rt></ruby> <span id="diffLabel3">4</span></div>
+                    <p class="question-text" id="question3"><ruby>数学<rt>すうがく</rt></ruby>の<ruby>海<rt>うみ</rt></ruby>において、どんな<ruby>数字<rt>すうじ</rt></ruby>に<ruby>掛<rt>か</rt></ruby>けてもその<ruby>姿<rt>すがた</rt></ruby>を<ruby>変<rt>か</rt></ruby>えない「<ruby>乗法<rt>じょうほう</rt></ruby>の<ruby>単位元<rt>たんいげん</rt></ruby>」は？</p>
+                </div>
+                <div class="answer-section">
+                    <input type="text" class="answer-input" id="answer3" placeholder="答えを入力..." autocomplete="off" disabled>
+                    <button class="submit-btn" id="submit3" onclick="checkAnswer(3)" disabled><ruby>解答<rt>かいとう</rt></ruby></button>
+                    <button class="hint-btn" id="hint3" onclick="showHint(3)" disabled>💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                </div>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Overlay -->
+    <div class="completion-overlay" id="completionOverlay">
+        <div class="completion-content">
+            <h2>🎊 <ruby>宝箱<rt>たからばこ</rt></ruby><ruby>解錠<rt>かいじょう</rt></ruby>！🎊</h2>
+            <div class="treasure-icon">💎</div>
+            <p>おめでとう、<ruby>勇敢<rt>ゆうかん</rt></ruby>なる<ruby>探検者<rt>たんけんしゃ</rt></ruby>よ！<br><br>
+            <ruby>汝<rt>なんじ</rt></ruby>は<ruby>知恵<rt>ちえ</rt></ruby>と<ruby>勇気<rt>ゆうき</rt></ruby>をもって、<br>
+            3つの<ruby>古代<rt>こだい</rt></ruby>の<ruby>謎<rt>なぞ</rt></ruby>を<ruby>解<rt>と</rt></ruby>き<ruby>明<rt>あ</rt></ruby>かした。<br><br>
+            <strong style="color: #ffd700;"><ruby>解錠<rt>かいじょう</rt></ruby><ruby>番号<rt>ばんごう</rt></ruby>: 2 - 9 - 1</strong><br><br>
+            さあ、<ruby>宝箱<rt>たからばこ</rt></ruby>を<ruby>開<rt>あ</rt></ruby>けるがよい！</p>
+        </div>
+    </div>
+
+    <div class="sparkles" id="sparkles"></div>
+
+    <script>
+        // Questions data (with ruby tags for furigana)
+        const questions = {
+            1: {
+                answer: 2,
+                levels: [
+                    { level: 4, text: '<ruby>数学界<rt>すうがくかい</rt></ruby>の<ruby>未解決難問<rt>みかいけつなんもん</rt></ruby>「ゴールドバッハ<ruby>予想<rt>よそう</rt></ruby>」において、<ruby>全<rt>すべ</rt></ruby>ての<ruby>偶数<rt>ぐうすう</rt></ruby>を<ruby>形作<rt>かたちづく</rt></ruby>る<ruby>最小<rt>さいしょう</rt></ruby>の<ruby>素数<rt>そすう</rt></ruby>は？' },
+                    { level: 3, text: '<ruby>宇宙<rt>うちゅう</rt></ruby>を<ruby>漂<rt>ただよ</rt></ruby>う「<ruby>連星系<rt>れんせいけい</rt></ruby>」において、<ruby>互<rt>たが</rt></ruby>いの<ruby>重力<rt>じゅうりょく</rt></ruby>で<ruby>引<rt>ひ</rt></ruby>き<ruby>付<rt>つ</rt></ruby>け<ruby>合<rt>あ</rt></ruby>い、<ruby>共<rt>とも</rt></ruby>に<ruby>回転<rt>かいてん</rt></ruby>する<ruby>天体<rt>てんたい</rt></ruby>の<ruby>数<rt>かず</rt></ruby>は？' },
+                    { level: 2, text: '<ruby>生命<rt>せいめい</rt></ruby>の<ruby>螺旋<rt>らせん</rt></ruby>。DNAの<ruby>二重構造<rt>にじゅうこうぞう</rt></ruby>を<ruby>形成<rt>けいせい</rt></ruby>するポリヌクレオチド<ruby>鎖<rt>さ</rt></ruby>の<ruby>数<rt>かず</rt></ruby>は？' },
+                    { level: 1, text: 'コンピュータの<ruby>深淵<rt>しんえん</rt></ruby>。0と1、すなわち「<ruby>二進法<rt>にしんほう</rt></ruby>」で<ruby>扱<rt>あつか</rt></ruby>われる<ruby>情報<rt>じょうほう</rt></ruby>の<ruby>種類<rt>しゅるい</rt></ruby>は？' },
+                    { level: 0, text: 'いち、<strong>？</strong>、さん、し、ご...<ruby>数<rt>かぞ</rt></ruby>えてみよう！「<ruby>？<rt>はてな</rt></ruby>」に<ruby>入<rt>はい</rt></ruby>る<ruby>数字<rt>すうじ</rt></ruby>は？' }
+                ]
+            },
+            2: {
+                answer: 9,
+                levels: [
+                    { level: 4, text: '<ruby>全<rt>すべ</rt></ruby>ての<ruby>元素<rt>げんそ</rt></ruby>の<ruby>中<rt>なか</rt></ruby>で<ruby>最<rt>もっと</rt></ruby>も<ruby>強<rt>つよ</rt></ruby>い「<ruby>電気陰性度<rt>でんきいんせいど</rt></ruby>」を<ruby>持<rt>も</rt></ruby>ち、<ruby>他<rt>ほか</rt></ruby>の<ruby>物質<rt>ぶっしつ</rt></ruby>から<ruby>電子<rt>でんし</rt></ruby>を<ruby>奪<rt>うば</rt></ruby>い<ruby>去<rt>さ</rt></ruby>る<ruby>原子番号<rt>げんしばんごう</rt></ruby>9の<ruby>元素<rt>げんそ</rt></ruby>は？' },
+                    { level: 3, text: 'かつて<ruby>太陽系<rt>たいようけい</rt></ruby>の<ruby>果<rt>は</rt></ruby>てに<ruby>冥王星<rt>めいおうせい</rt></ruby>が<ruby>数<rt>かぞ</rt></ruby>えられていた<ruby>頃<rt>ころ</rt></ruby>、<ruby>教科書<rt>きょうかしょ</rt></ruby>に<ruby>記<rt>しる</rt></ruby>されていた<ruby>惑星<rt>わくせい</rt></ruby>の<ruby>総数<rt>そうすう</rt></ruby>は？' },
+                    { level: 2, text: '<ruby>魔法陣<rt>まほうじん</rt></ruby>（3×3）において、<ruby>縦<rt>たて</rt></ruby>・<ruby>横<rt>よこ</rt></ruby>・<ruby>斜<rt>なな</rt></ruby>めの<ruby>和<rt>わ</rt></ruby>を<ruby>一定<rt>いってい</rt></ruby>にするために<ruby>配置<rt>はいち</rt></ruby>される、<ruby>一桁<rt>ひとけた</rt></ruby>で<ruby>最大<rt>さいだい</rt></ruby>の<ruby>正<rt>せい</rt></ruby>の<ruby>整数<rt>せいすう</rt></ruby>は？' },
+                    { level: 1, text: '<span class="math-formula">√81</span>。この<ruby>数式<rt>すうしき</rt></ruby>を<ruby>解<rt>と</rt></ruby>き<ruby>明<rt>あ</rt></ruby>かした<ruby>先<rt>さき</rt></ruby>に<ruby>現<rt>あらわ</rt></ruby>れる、<ruby>九九<rt>くく</rt></ruby>の<ruby>終着点<rt>しゅうちゃくてん</rt></ruby>は？' },
+                    { level: 0, text: '1、2、3、4、5、6、7、8、<strong>？</strong>...<ruby>一桁<rt>ひとけた</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>で<ruby>一番大<rt>いちばんおお</rt></ruby>きいのは？' }
+                ]
+            },
+            3: {
+                answer: 1,
+                levels: [
+                    { level: 4, text: '<ruby>数学<rt>すうがく</rt></ruby>の<ruby>海<rt>うみ</rt></ruby>において、どんな<ruby>数字<rt>すうじ</rt></ruby>に<ruby>掛<rt>か</rt></ruby>けてもその<ruby>姿<rt>すがた</rt></ruby>を<ruby>変<rt>か</rt></ruby>えない「<ruby>乗法<rt>じょうほう</rt></ruby>の<ruby>単位元<rt>たんいげん</rt></ruby>」は？' },
+                    { level: 3, text: '<ruby>宇宙開闢<rt>うちゅうかいびゃく</rt></ruby>の<ruby>瞬間<rt>しゅんかん</rt></ruby>、<ruby>最初<rt>さいしょ</rt></ruby>に<ruby>生<rt>う</rt></ruby>まれた<ruby>最<rt>もっと</rt></ruby>も<ruby>軽<rt>かる</rt></ruby>い<ruby>元素<rt>げんそ</rt></ruby>「<ruby>水素<rt>すいそ</rt></ruby>」。その<ruby>中性子<rt>ちゅうせいし</rt></ruby>を<ruby>持<rt>も</rt></ruby>たない<ruby>原子核<rt>げんしかく</rt></ruby>の<ruby>番号<rt>ばんごう</rt></ruby>は？' },
+                    { level: 2, text: '<ruby>孤独<rt>こどく</rt></ruby>な<ruby>定義<rt>ていぎ</rt></ruby>。<ruby>素数<rt>そすう</rt></ruby>（<ruby>約数<rt>やくすう</rt></ruby>2つ）にも、<ruby>合成数<rt>ごうせいすう</rt></ruby>（<ruby>約数<rt>やくすう</rt></ruby>3つ<ruby>以上<rt>いじょう</rt></ruby>）にも<ruby>分類<rt>ぶんるい</rt></ruby>されない<ruby>唯一<rt>ゆいいつ</rt></ruby>の<ruby>自然数<rt>しぜんすう</rt></ruby>は？' },
+                    { level: 1, text: '<ruby>無<rt>む</rt></ruby>への<ruby>帰還<rt>きかん</rt></ruby>。0<ruby>以外<rt>いがい</rt></ruby>のあらゆる<ruby>数<rt>すう</rt></ruby> <span class="math-formula">x</span> において、<span class="math-formula">x<sup>0</sup></span>（0<ruby>乗<rt>じょう</rt></ruby>）が<ruby>等<rt>ひと</rt></ruby>しく<ruby>行<rt>い</rt></ruby>き<ruby>着<rt>つ</rt></ruby>く<ruby>先<rt>さき</rt></ruby>は？' },
+                    { level: 0, text: '<ruby>一番<rt>いちばん</rt></ruby><ruby>最初<rt>さいしょ</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>！<ruby>指<rt>ゆび</rt></ruby>を<strong>？</strong><ruby>本<rt>ほん</rt></ruby><ruby>立<rt>た</rt></ruby>てて「いち！」<ruby>何本<rt>なんぼん</rt></ruby><ruby>立<rt>た</rt></ruby>てた？' }
+                ]
+            }
+        };
+
+        // State
+        let currentLevels = { 1: 0, 2: 0, 3: 0 }; // Index into levels array (0 = Lvl.4, 4 = Lvl.0)
+        let solved = { 1: false, 2: false, 3: false };
+        let currentFragment = 1;
+
+        // Check answer
+        function checkAnswer(fragment) {
+            const input = document.getElementById(`answer${fragment}`);
+            const feedback = document.getElementById(`feedback${fragment}`);
+            const userAnswer = input.value.trim();
+            const correctAnswer = questions[fragment].answer;
+
+            // Accept various formats
+            const normalizedAnswer = normalizeAnswer(userAnswer);
+            
+            if (normalizedAnswer === correctAnswer) {
+                // Correct!
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '✨ <ruby>正解<rt>せいかい</rt></ruby>！<ruby>断片<rt>だんぺん</rt></ruby>を<ruby>獲得<rt>かくとく</rt></ruby>した！';
+                solved[fragment] = true;
+                
+                // Update UI
+                document.getElementById(`digit${fragment}`).textContent = correctAnswer;
+                document.getElementById(`digit${fragment}`).classList.add('solved');
+                document.getElementById(`fragment${fragment}`).classList.remove('active');
+                document.getElementById(`fragment${fragment}`).classList.add('completed');
+                
+                // Disable inputs
+                input.disabled = true;
+                document.getElementById(`submit${fragment}`).disabled = true;
+                document.getElementById(`hint${fragment}`).disabled = true;
+
+                // Create sparkles
+                createSparkles(event);
+
+                // Check if all solved
+                if (solved[1] && solved[2] && solved[3]) {
+                    setTimeout(showCompletion, 1000);
+                } else {
+                    // Activate next fragment
+                    activateNextFragment(fragment);
+                }
+            } else {
+                // Wrong
+                feedback.className = 'feedback wrong';
+                
+                const levelIndex = currentLevels[fragment];
+                if (levelIndex < 4) {
+                    // Move to easier question
+                    currentLevels[fragment]++;
+                    updateLevelIndicator(fragment);
+                    
+                    feedback.innerHTML = '❌ <ruby>不正解<rt>ふせいかい</rt></ruby>...より<ruby>易<rt>やさ</rt></ruby>しき<ruby>問<rt>と</rt></ruby>いへ<ruby>導<rt>みちび</rt></ruby>こう。';
+                    
+                    setTimeout(() => {
+                        updateQuestion(fragment);
+                        feedback.style.display = 'none';
+                        input.value = '';
+                    }, 1500);
+                } else {
+                    // Already at easiest level
+                    feedback.innerHTML = '❌ <ruby>不正解<rt>ふせいかい</rt></ruby>...もう<ruby>一度<rt>いちど</rt></ruby><ruby>考<rt>かんが</rt></ruby>えてみよう。';
+                }
+            }
+        }
+
+        function normalizeAnswer(answer) {
+            // Convert various formats to number
+            const numMap = {
+                '一': 1, '二': 2, '三': 3, '四': 4, '五': 5,
+                '六': 6, '七': 7, '八': 8, '九': 9, '零': 0,
+                '１': 1, '２': 2, '３': 3, '４': 4, '５': 5,
+                '６': 6, '７': 7, '８': 8, '９': 9, '０': 0,
+                'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+                'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'zero': 0,
+                'フッ素': 9, 'ふっそ': 9, 'f': 9, 'fluorine': 9
+            };
+
+            const lower = answer.toLowerCase();
+            if (numMap[lower] !== undefined) return numMap[lower];
+            if (numMap[answer] !== undefined) return numMap[answer];
+            
+            const num = parseInt(answer);
+            if (!isNaN(num)) return num;
+            
+            return answer;
+        }
+
+        function updateQuestion(fragment) {
+            const levelIndex = currentLevels[fragment];
+            const questionData = questions[fragment].levels[levelIndex];
+            
+            document.getElementById(`question${fragment}`).innerHTML = questionData.text;
+            document.getElementById(`level${fragment}`).textContent = `Lvl.${questionData.level}`;
+            document.getElementById(`diffLabel${fragment}`).textContent = questionData.level;
+        }
+
+        function updateLevelIndicator(fragment) {
+            const indicator = document.getElementById(`levelIndicator${fragment}`);
+            const dots = indicator.querySelectorAll('.level-dot');
+            const levelIndex = currentLevels[fragment];
+            
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'failed');
+                if (index < levelIndex) {
+                    dot.classList.add('failed');
+                } else if (index === levelIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function activateNextFragment(current) {
+            const next = current + 1;
+            if (next <= 3 && !solved[next]) {
+                setTimeout(() => {
+                    document.getElementById(`fragment${next}`).classList.add('active');
+                    document.getElementById(`answer${next}`).disabled = false;
+                    document.getElementById(`submit${next}`).disabled = false;
+                    document.getElementById(`hint${next}`).disabled = false;
+                    document.getElementById(`answer${next}`).focus();
+                }, 500);
+            }
+        }
+
+        function showHint(fragment) {
+            // Jump to easiest level (Lvl.0)
+            currentLevels[fragment] = 4;
+            updateLevelIndicator(fragment);
+            updateQuestion(fragment);
+            
+            const feedback = document.getElementById(`feedback${fragment}`);
+            feedback.className = 'feedback wrong';
+            feedback.innerHTML = '💡 <ruby>最<rt>もっと</rt></ruby>も<ruby>易<rt>やさ</rt></ruby>しき<ruby>問<rt>と</rt></ruby>いへ...';
+            feedback.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 1500);
+        }
+
+        function showCompletion() {
+            document.getElementById('treasureBox').classList.add('unlocked');
+            
+            setTimeout(() => {
+                document.getElementById('completionOverlay').classList.add('show');
+                createCelebration();
+            }, 500);
+        }
+
+        function createSparkles(e) {
+            const sparkles = document.getElementById('sparkles');
+            const rect = e.target.getBoundingClientRect();
+            
+            for (let i = 0; i < 10; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = (rect.left + rect.width/2 + (Math.random() - 0.5) * 100) + 'px';
+                sparkle.style.top = (rect.top + (Math.random() - 0.5) * 50) + 'px';
+                sparkles.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+
+        function createCelebration() {
+            const sparkles = document.getElementById('sparkles');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+                    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+                    sparkle.style.background = ['#ffd700', '#ff6b6b', '#4ade80', '#60a5fa'][Math.floor(Math.random() * 4)];
+                    sparkles.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        // Enter key to submit
+        document.querySelectorAll('.answer-input').forEach((input, index) => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !input.disabled) {
+                    checkAnswer(index + 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
