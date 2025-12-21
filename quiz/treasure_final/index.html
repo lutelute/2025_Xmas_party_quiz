@@ -288,6 +288,45 @@
             cursor: not-allowed;
         }
 
+        .fragment-reset-btn {
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            background: transparent;
+            border: 2px solid #666;
+            border-radius: 8px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fragment-reset-btn:hover {
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
+        .fragment-reset-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            background: transparent;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
         .feedback {
             padding: 15px;
             border-radius: 8px;
@@ -406,7 +445,7 @@
         <h1>🏴‍☠️ <ruby>最後<rt>さいご</rt></ruby>の<ruby>試練<rt>しれん</rt></ruby> ⚔️</h1>
         
         <div class="hint-comment">
-            <ruby>難<rt>むずか</rt></ruby>しかったら「<ruby>降参<rt>こうさん</rt></ruby>」を<ruby>押<rt>お</rt></ruby>すと<ruby>簡単<rt>かんたん</rt></ruby>な<ruby>問題<rt>もんだい</rt></ruby>になるよ！
+            <ruby>難<rt>むずか</rt></ruby>しかったら「レベルを<ruby>下<rt>さ</rt></ruby>げる」を<ruby>押<rt>お</rt></ruby>すと、<ruby>少<rt>すこ</rt></ruby>し<ruby>簡単<rt>かんたん</rt></ruby>な<ruby>問題<rt>もんだい</rt></ruby>になるよ！
         </div>
         
         <div class="treasure-box" id="treasureBox">
@@ -441,7 +480,8 @@
                 <div class="answer-section">
                     <input type="text" class="answer-input" id="answer1" placeholder="答えを入力..." autocomplete="off">
                     <button class="submit-btn" id="submit1" onclick="checkAnswer(1)"><ruby>解答<rt>かいとう</rt></ruby></button>
-                    <button class="hint-btn" id="hint1" onclick="showHint(1)">💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                    <button class="hint-btn" id="hint1" onclick="showHint(1)">💡 レベルを<ruby>下<rt>さ</rt></ruby>げる</button>
+                    <button class="fragment-reset-btn" id="reset1" onclick="resetFragment(1)">🔄 この<ruby>問題<rt>もんだい</rt></ruby>をリセット</button>
                 </div>
                 <div class="feedback" id="feedback1"></div>
             </div>
@@ -467,7 +507,8 @@
                 <div class="answer-section">
                     <input type="text" class="answer-input" id="answer2" placeholder="答えを入力..." autocomplete="off" disabled>
                     <button class="submit-btn" id="submit2" onclick="checkAnswer(2)" disabled><ruby>解答<rt>かいとう</rt></ruby></button>
-                    <button class="hint-btn" id="hint2" onclick="showHint(2)" disabled>💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                    <button class="hint-btn" id="hint2" onclick="showHint(2)" disabled>💡 レベルを<ruby>下<rt>さ</rt></ruby>げる</button>
+                    <button class="fragment-reset-btn" id="reset2" onclick="resetFragment(2)" disabled>🔄 この<ruby>問題<rt>もんだい</rt></ruby>をリセット</button>
                 </div>
                 <div class="feedback" id="feedback2"></div>
             </div>
@@ -493,11 +534,14 @@
                 <div class="answer-section">
                     <input type="text" class="answer-input" id="answer3" placeholder="答えを入力..." autocomplete="off" disabled>
                     <button class="submit-btn" id="submit3" onclick="checkAnswer(3)" disabled><ruby>解答<rt>かいとう</rt></ruby></button>
-                    <button class="hint-btn" id="hint3" onclick="showHint(3)" disabled>💡 <ruby>降参<rt>こうさん</rt></ruby></button>
+                    <button class="hint-btn" id="hint3" onclick="showHint(3)" disabled>💡 レベルを<ruby>下<rt>さ</rt></ruby>げる</button>
+                    <button class="fragment-reset-btn" id="reset3" onclick="resetFragment(3)" disabled>🔄 この<ruby>問題<rt>もんだい</rt></ruby>をリセット</button>
                 </div>
                 <div class="feedback" id="feedback3"></div>
             </div>
         </div>
+
+        <button class="reset-btn" onclick="resetGame()">🔄 <ruby>最初<rt>さいしょ</rt></ruby>からやり<ruby>直<rt>なお</rt></ruby>す</button>
     </div>
 
     <!-- Completion Overlay -->
@@ -525,7 +569,7 @@
                     { level: 3, text: '<ruby>宇宙<rt>うちゅう</rt></ruby>を<ruby>漂<rt>ただよ</rt></ruby>う「<ruby>連星系<rt>れんせいけい</rt></ruby>」において、<ruby>互<rt>たが</rt></ruby>いの<ruby>重力<rt>じゅうりょく</rt></ruby>で<ruby>引<rt>ひ</rt></ruby>き<ruby>付<rt>つ</rt></ruby>け<ruby>合<rt>あ</rt></ruby>い、<ruby>共<rt>とも</rt></ruby>に<ruby>回転<rt>かいてん</rt></ruby>する<ruby>天体<rt>てんたい</rt></ruby>の<ruby>数<rt>かず</rt></ruby>は？' },
                     { level: 2, text: '<ruby>生命<rt>せいめい</rt></ruby>の<ruby>螺旋<rt>らせん</rt></ruby>。DNAの<ruby>二重構造<rt>にじゅうこうぞう</rt></ruby>を<ruby>形成<rt>けいせい</rt></ruby>するポリヌクレオチド<ruby>鎖<rt>さ</rt></ruby>の<ruby>数<rt>かず</rt></ruby>は？' },
                     { level: 1, text: 'コンピュータの<ruby>深淵<rt>しんえん</rt></ruby>。0と1、すなわち「<ruby>二進法<rt>にしんほう</rt></ruby>」で<ruby>扱<rt>あつか</rt></ruby>われる<ruby>情報<rt>じょうほう</rt></ruby>の<ruby>種類<rt>しゅるい</rt></ruby>は？' },
-                    { level: 0, text: 'いち、<strong>？</strong>、さん、し、ご...<ruby>数<rt>かぞ</rt></ruby>えてみよう！「<ruby>？<rt>はてな</rt></ruby>」に<ruby>入<rt>はい</rt></ruby>る<ruby>数字<rt>すうじ</rt></ruby>は？' }
+                    { level: 0, text: '✌️ ピースサイン！<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>るとき、みんながよくやるこのポーズ。<ruby>立<rt>た</rt></ruby>てている<ruby>指<rt>ゆび</rt></ruby>は<ruby>何本<rt>なんぼん</rt></ruby>？' }
                 ]
             },
             2: {
@@ -535,7 +579,7 @@
                     { level: 3, text: 'かつて<ruby>太陽系<rt>たいようけい</rt></ruby>の<ruby>果<rt>は</rt></ruby>てに<ruby>冥王星<rt>めいおうせい</rt></ruby>が<ruby>数<rt>かぞ</rt></ruby>えられていた<ruby>頃<rt>ころ</rt></ruby>、<ruby>教科書<rt>きょうかしょ</rt></ruby>に<ruby>記<rt>しる</rt></ruby>されていた<ruby>惑星<rt>わくせい</rt></ruby>の<ruby>総数<rt>そうすう</rt></ruby>は？' },
                     { level: 2, text: '<ruby>魔法陣<rt>まほうじん</rt></ruby>（3×3）において、<ruby>縦<rt>たて</rt></ruby>・<ruby>横<rt>よこ</rt></ruby>・<ruby>斜<rt>なな</rt></ruby>めの<ruby>和<rt>わ</rt></ruby>を<ruby>一定<rt>いってい</rt></ruby>にするために<ruby>配置<rt>はいち</rt></ruby>される、<ruby>一桁<rt>ひとけた</rt></ruby>で<ruby>最大<rt>さいだい</rt></ruby>の<ruby>正<rt>せい</rt></ruby>の<ruby>整数<rt>せいすう</rt></ruby>は？' },
                     { level: 1, text: '<span class="math-formula">√81</span>。この<ruby>数式<rt>すうしき</rt></ruby>を<ruby>解<rt>と</rt></ruby>き<ruby>明<rt>あ</rt></ruby>かした<ruby>先<rt>さき</rt></ruby>に<ruby>現<rt>あらわ</rt></ruby>れる、<ruby>九九<rt>くく</rt></ruby>の<ruby>終着点<rt>しゅうちゃくてん</rt></ruby>は？' },
-                    { level: 0, text: '1、2、3、4、5、6、7、8、<strong>？</strong>...<ruby>一桁<rt>ひとけた</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>で<ruby>一番大<rt>いちばんおお</rt></ruby>きいのは？' }
+                    { level: 0, text: '⚾ <ruby>野球<rt>やきゅう</rt></ruby>の<ruby>試合<rt>しあい</rt></ruby>。<ruby>最後<rt>さいご</rt></ruby>のイニングは<ruby>何回<rt>なんかい</rt></ruby>？（ヒント：<ruby>延長<rt>えんちょう</rt></ruby>なしの<ruby>場合<rt>ばあい</rt></ruby>）' }
                 ]
             },
             3: {
@@ -545,7 +589,7 @@
                     { level: 3, text: '<ruby>宇宙開闢<rt>うちゅうかいびゃく</rt></ruby>の<ruby>瞬間<rt>しゅんかん</rt></ruby>、<ruby>最初<rt>さいしょ</rt></ruby>に<ruby>生<rt>う</rt></ruby>まれた<ruby>最<rt>もっと</rt></ruby>も<ruby>軽<rt>かる</rt></ruby>い<ruby>元素<rt>げんそ</rt></ruby>「<ruby>水素<rt>すいそ</rt></ruby>」。その<ruby>中性子<rt>ちゅうせいし</rt></ruby>を<ruby>持<rt>も</rt></ruby>たない<ruby>原子核<rt>げんしかく</rt></ruby>の<ruby>番号<rt>ばんごう</rt></ruby>は？' },
                     { level: 2, text: '<ruby>孤独<rt>こどく</rt></ruby>な<ruby>定義<rt>ていぎ</rt></ruby>。<ruby>素数<rt>そすう</rt></ruby>（<ruby>約数<rt>やくすう</rt></ruby>2つ）にも、<ruby>合成数<rt>ごうせいすう</rt></ruby>（<ruby>約数<rt>やくすう</rt></ruby>3つ<ruby>以上<rt>いじょう</rt></ruby>）にも<ruby>分類<rt>ぶんるい</rt></ruby>されない<ruby>唯一<rt>ゆいいつ</rt></ruby>の<ruby>自然数<rt>しぜんすう</rt></ruby>は？' },
                     { level: 1, text: '<ruby>無<rt>む</rt></ruby>への<ruby>帰還<rt>きかん</rt></ruby>。0<ruby>以外<rt>いがい</rt></ruby>のあらゆる<ruby>数<rt>すう</rt></ruby> <span class="math-formula">x</span> において、<span class="math-formula">x<sup>0</sup></span>（0<ruby>乗<rt>じょう</rt></ruby>）が<ruby>等<rt>ひと</rt></ruby>しく<ruby>行<rt>い</rt></ruby>き<ruby>着<rt>つ</rt></ruby>く<ruby>先<rt>さき</rt></ruby>は？' },
-                    { level: 0, text: '<ruby>一番<rt>いちばん</rt></ruby><ruby>最初<rt>さいしょ</rt></ruby>の<ruby>数字<rt>すうじ</rt></ruby>！<ruby>指<rt>ゆび</rt></ruby>を<strong>？</strong><ruby>本<rt>ほん</rt></ruby><ruby>立<rt>た</rt></ruby>てて「いち！」<ruby>何本<rt>なんぼん</rt></ruby><ruby>立<rt>た</rt></ruby>てた？' }
+                    { level: 0, text: '🥇 オリンピック！<ruby>一番<rt>いちばん</rt></ruby><ruby>速<rt>はや</rt></ruby>くゴールした<ruby>人<rt>ひと</rt></ruby>がもらえる<ruby>金<rt>きん</rt></ruby>メダル。その<ruby>順位<rt>じゅんい</rt></ruby>は<ruby>何位<rt>なんい</rt></ruby>？' }
                 ]
             }
         };
@@ -581,6 +625,7 @@
                 input.disabled = true;
                 document.getElementById(`submit${fragment}`).disabled = true;
                 document.getElementById(`hint${fragment}`).disabled = true;
+                document.getElementById(`reset${fragment}`).disabled = true;
 
                 // Create sparkles
                 createSparkles(event);
@@ -593,26 +638,10 @@
                     activateNextFragment(fragment);
                 }
             } else {
-                // Wrong
+                // Wrong - stay on the same question
                 feedback.className = 'feedback wrong';
-                
-                const levelIndex = currentLevels[fragment];
-                if (levelIndex < 4) {
-                    // Move to easier question
-                    currentLevels[fragment]++;
-                    updateLevelIndicator(fragment);
-                    
-                    feedback.innerHTML = '❌ <ruby>不正解<rt>ふせいかい</rt></ruby>...より<ruby>易<rt>やさ</rt></ruby>しき<ruby>問<rt>と</rt></ruby>いへ<ruby>導<rt>みちび</rt></ruby>こう。';
-                    
-                    setTimeout(() => {
-                        updateQuestion(fragment);
-                        feedback.style.display = 'none';
-                        input.value = '';
-                    }, 1500);
-                } else {
-                    // Already at easiest level
-                    feedback.innerHTML = '❌ <ruby>不正解<rt>ふせいかい</rt></ruby>...もう<ruby>一度<rt>いちど</rt></ruby><ruby>考<rt>かんが</rt></ruby>えてみよう。';
-                }
+                feedback.innerHTML = '❌ <ruby>不正解<rt>ふせいかい</rt></ruby>...もう<ruby>一度<rt>いちど</rt></ruby><ruby>考<rt>かんが</rt></ruby>えてみよう。';
+                input.value = '';
             }
         }
 
@@ -670,25 +699,122 @@
                     document.getElementById(`answer${next}`).disabled = false;
                     document.getElementById(`submit${next}`).disabled = false;
                     document.getElementById(`hint${next}`).disabled = false;
+                    document.getElementById(`reset${next}`).disabled = false;
                     document.getElementById(`answer${next}`).focus();
                 }, 500);
             }
         }
 
         function showHint(fragment) {
-            // Jump to easiest level (Lvl.0)
-            currentLevels[fragment] = 4;
-            updateLevelIndicator(fragment);
+            const levelIndex = currentLevels[fragment];
+            
+            // Only decrease by 1 level if not already at easiest
+            if (levelIndex < 4) {
+                currentLevels[fragment]++;
+                updateLevelIndicator(fragment);
+                updateQuestion(fragment);
+                
+                const feedback = document.getElementById(`feedback${fragment}`);
+                feedback.className = 'feedback wrong';
+                feedback.innerHTML = '💡 <ruby>少<rt>すこ</rt></ruby>し<ruby>易<rt>やさ</rt></ruby>しい<ruby>問<rt>と</rt></ruby>いへ...（Lvl.' + questions[fragment].levels[currentLevels[fragment]].level + '）';
+                feedback.style.display = 'block';
+                
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 1500);
+            } else {
+                // Already at easiest level
+                const feedback = document.getElementById(`feedback${fragment}`);
+                feedback.className = 'feedback wrong';
+                feedback.innerHTML = '😅 これが<ruby>最<rt>もっと</rt></ruby>も<ruby>易<rt>やさ</rt></ruby>しい<ruby>問<rt>と</rt></ruby>いだよ！がんばって！';
+                feedback.style.display = 'block';
+                
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 1500);
+            }
+        }
+
+        function resetFragment(fragment) {
+            // Reset this fragment's state
+            currentLevels[fragment] = 0;
+            
+            // Reset input and feedback
+            document.getElementById(`answer${fragment}`).value = '';
+            document.getElementById(`feedback${fragment}`).style.display = 'none';
+            document.getElementById(`feedback${fragment}`).className = 'feedback';
+            
+            // Reset question and level indicator
             updateQuestion(fragment);
+            updateLevelIndicator(fragment);
             
-            const feedback = document.getElementById(`feedback${fragment}`);
-            feedback.className = 'feedback wrong';
-            feedback.innerHTML = '💡 <ruby>最<rt>もっと</rt></ruby>も<ruby>易<rt>やさ</rt></ruby>しき<ruby>問<rt>と</rt></ruby>いへ...';
-            feedback.style.display = 'block';
+            // Reset level indicator to show first dot active
+            const indicator = document.getElementById(`levelIndicator${fragment}`);
+            const dots = indicator.querySelectorAll('.level-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'failed');
+                if (index === 0) dot.classList.add('active');
+            });
+        }
+
+        function resetGame() {
+            // Reset state
+            currentLevels = { 1: 0, 2: 0, 3: 0 };
+            solved = { 1: false, 2: false, 3: false };
             
-            setTimeout(() => {
-                feedback.style.display = 'none';
-            }, 1500);
+            // Reset digits
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`digit${i}`).textContent = '?';
+                document.getElementById(`digit${i}`).classList.remove('solved');
+            }
+            
+            // Reset treasure box
+            document.getElementById('treasureBox').classList.remove('unlocked');
+            
+            // Reset fragments
+            for (let i = 1; i <= 3; i++) {
+                const fragment = document.getElementById(`fragment${i}`);
+                fragment.classList.remove('completed');
+                
+                if (i === 1) {
+                    fragment.classList.add('active');
+                    document.getElementById(`answer${i}`).disabled = false;
+                    document.getElementById(`submit${i}`).disabled = false;
+                    document.getElementById(`hint${i}`).disabled = false;
+                    document.getElementById(`reset${i}`).disabled = false;
+                } else {
+                    fragment.classList.remove('active');
+                    document.getElementById(`answer${i}`).disabled = true;
+                    document.getElementById(`submit${i}`).disabled = true;
+                    document.getElementById(`hint${i}`).disabled = true;
+                    document.getElementById(`reset${i}`).disabled = true;
+                }
+                
+                // Reset input and feedback
+                document.getElementById(`answer${i}`).value = '';
+                document.getElementById(`feedback${i}`).style.display = 'none';
+                document.getElementById(`feedback${i}`).className = 'feedback';
+                
+                // Reset question and level indicator
+                updateQuestion(i);
+                updateLevelIndicator(i);
+            }
+            
+            // Reset level indicators to show first dot active
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`levelIndicator${i}`);
+                const dots = indicator.querySelectorAll('.level-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('active', 'failed');
+                    if (index === 0) dot.classList.add('active');
+                });
+            }
+            
+            // Hide completion overlay
+            document.getElementById('completionOverlay').classList.remove('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function showCompletion() {
