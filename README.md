@@ -1,10 +1,10 @@
-# 🎄 2025年 クリスマスパーティークイズ
+# 🎄 2025 Christmas Party Quiz
 
-サンタさんの忘れ物を探すクリスマスパーティー向けのインタラクティブパズルゲームです。
+An interactive puzzle game for Christmas parties where participants help Santa find his forgotten items.
 
-## 🎮 ゲーム概要
+## 🎮 Game Overview
 
-サンタクロースが大切なものを忘れていったようです。参加者が力を合わせて忘れ物を見つけるパズルゲームです。
+Santa Claus seems to have forgotten something important. This is a puzzle game where participants work together to find what Santa left behind.
 
 ### ゲームの流れ
 1. **通知ビデオ** - パーティー参加者への案内動画
@@ -55,13 +55,14 @@ cd 2025_Xmas_party_quiz
 ├── invitation.html      # サンタからの招待状（ゲームの導入）
 ├── index.html          # メインのパズルゲーム
 ├── spreadsheet.html    # Googleスプレッドシート埋め込みページ
-├── video/              # 通知ビデオファイル
+├── video/              # Video files
 │   ├── santa_video_final.mp4
 │   ├── santa_video_with_subtitle_hiragana.mp4
-│   └── santa_video_old.mp4
-├── puzzles/
+│   ├── santa_video_old.mp4
+│   └── ending_ultra_final.mp4  # Ending video
+├── quiz/
 │   └── 1/
-│       └── index.html  # パズル1のページ
+│       └── index.html  # Quiz 1 page
 ├── SOS_sheep/          # 羊のモールス信号謎解きゲーム
 │   ├── sheep1.html     # 羊1のページ
 │   ├── sheep2.html     # 羊2のページ
