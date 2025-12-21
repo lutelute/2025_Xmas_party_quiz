@@ -33,7 +33,9 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 #### 🎮 ゲーム本体
 - **招待状**: https://lutelute.github.io/2025_Xmas_party_quiz/invitation.html
 - **謎解きゲーム**: https://lutelute.github.io/2025_Xmas_party_quiz/
-- **SOS羊のメールス信号**: https://lutelute.github.io/2025_Xmas_party_quiz/SOS_sheep/sheep1.html
+- **Apple Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/apple_puzzle/
+- **Autumn Cipher**: https://lutelute.github.io/2025_Xmas_party_quiz/autumn_cipher/momiji.html
+- **SOS Morse Sheep**: https://lutelute.github.io/2025_Xmas_party_quiz/morse_sheep/sheep1.html
 
 #### 📊 管理ツール
 - **データ管理**: https://lutelute.github.io/2025_Xmas_party_quiz/spreadsheet.html
@@ -52,24 +54,25 @@ cd 2025_Xmas_party_quiz
 
 ```
 2025_Xmas_party_quiz/
-├── invitation.html      # サンタからの招待状（ゲームの導入）
-├── index.html          # メインのパズルゲーム
-├── spreadsheet.html    # Googleスプレッドシート埋め込みページ
+├── invitation.html      # Santa's invitation letter (game introduction)
+├── index.html          # Main puzzle game
+├── spreadsheet.html    # Google Spreadsheet embed page
 ├── video/              # Video files
 │   ├── santa_video_final.mp4
 │   ├── santa_video_with_subtitle_hiragana.mp4
 │   ├── santa_video_old.mp4
 │   └── ending_ultra_final.mp4  # Ending video
-├── quiz/
-│   └── 1/
-│       └── index.html  # Quiz 1 page
-├── SOS_sheep/          # 羊のモールス信号謎解きゲーム
-│   ├── sheep1.html     # 羊1のページ
-│   ├── sheep2.html     # 羊2のページ
-│   └── celebration.html # 正解時のお祝いページ
+├── apple_puzzle/       # Apple riddle puzzle
+│   └── index.html      # Apple puzzle game
+├── autumn_cipher/      # Autumn leaf cipher puzzle
+│   └── momiji.html     # Autumn cipher decryption game
+├── morse_sheep/        # SOS sheep morse code puzzle
+│   ├── sheep1.html     # Sheep 1 page
+│   ├── sheep2.html     # Sheep 2 page
+│   └── celebration.html # Success celebration page
 ├── sounds/
-│   └── README.md       # 音響効果の説明
-└── README.md           # このファイル
+│   └── README.md       # Audio effects documentation
+└── README.md           # This file
 ```
 
 ## 🎵 音響効果

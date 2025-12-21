@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍂 暗号解読 🍂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2em;
+            color: #8b4513;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #d2691e;
+            margin-bottom: 30px;
+        }
+
+        .cipher-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe4b5 100%);
+            border: 3px solid #d2691e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            line-height: 1.8;
+            text-align: center;
+            color: #8b4513;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mission {
+            background: #f0f8ff;
+            border-left: 5px solid #4682b4;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #4682b4;
+            margin-bottom: 15px;
+        }
+
+        .mission p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .hint-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .hint-button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hint-button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .hint-content {
+            background: #fffacd;
+            border: 2px dashed #ffa500;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+            font-size: 1.05em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .hint-content.hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .final-mission {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #ff6b9d;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
+        }
+
+        .final-mission-title {
+            font-size: 1.8em;
+            color: #c71585;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .final-message {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.4em;
+            line-height: 1.8;
+            color: #c71585;
+            font-weight: bold;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji {
+            font-size: 1.5em;
+        }
+
+        .leaf-decoration {
+            display: inline-block;
+            animation: fall 3s infinite;
+        }
+
+        @keyframes fall {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(10px) rotate(10deg); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 1.5em;
+            }
+            
+            .cipher-box {
+                font-size: 1.1em;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🍂 暗号を解読せよ 🍂</h1>
+
+        <div class="cipher-box">
+            <div>アキノオトズレ</div>
+            <div>ハッパノイロガ</div>
+            <div>カワルトキ</div>
+            <div>ソレヲトジコメタ</div>
+            <div>トウメイナモノノナカ</div>
+        </div>
+
+        <div class="mission">
+            <div class="mission-title">📝 ミッション</div>
+            <p>この暗号を解読し、それを見つけよ</p>
+
+            <div class="hint-buttons">
+                <button class="hint-button" data-hint="hint1">ヒント1</button>
+                <button class="hint-button" data-hint="hint2">ヒント2</button>
+            </div>
+
+            <div id="hint1" class="hint-content hidden">
+                💡 各行をつなげて読んでみよう
+            </div>
+
+            <div id="hint2" class="hint-content hidden">
+                💡 秋に色が変わる、手のひらのような形の葉っぱは...?
+            </div>
+        </div>
+
+        <div class="final-mission">
+            <div class="final-mission-title">
+                <span class="emoji">🎯</span>
+                <span>最終ミッション</span>
+                <span class="emoji">🎯</span>
+            </div>
+            <div class="final-message">
+                <div style="margin-bottom: 15px;">それを見つけたら...</div>
+                <div>📱 閉じ込められたものの声を</div>
+                <div>読み取ってみよう</div>
+                <div style="margin-top: 15px;"><span class="leaf-decoration">🍁</span>✨</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing hints...');
+            const buttons = document.querySelectorAll('.hint-button');
+            console.log('Found hint buttons:', buttons.length);
+
+            buttons.forEach(function(button, index) {
+                console.log('Setting up button', index);
+                button.addEventListener('click', function() {
+                    console.log('Hint button clicked');
+                    const hintId = this.getAttribute('data-hint');
+                    console.log('Looking for hint ID:', hintId);
+                    const hint = document.getElementById(hintId);
+                    console.log('Found hint element:', hint);
+
+                    if (hint) {
+                        if (hint.classList.contains('hidden')) {
+                            console.log('Showing hint');
+                            hint.classList.remove('hidden');
+                            this.textContent = this.textContent.replace('ヒント', '隠す');
+                        } else {
+                            console.log('Hiding hint');
+                            hint.classList.add('hidden');
+                            this.textContent = this.textContent.replace('隠す', 'ヒント');
+                        }
+                    } else {
+                        console.error('Hint element not found for ID:', hintId);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
