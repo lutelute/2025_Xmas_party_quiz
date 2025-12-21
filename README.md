@@ -27,18 +27,18 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 以下のURLでゲームをプレイできます：
 
 #### 🎬 通知ビデオ
-- **メイン動画**: [santa_video_final.mp4](https://lutelute.github.io/2025_Xmas_party_quiz/video/santa_video_final.mp4)
-- **ひらがなサブタイトル版**: [santa_video_with_subtitle_hiragana.mp4](https://lutelute.github.io/2025_Xmas_party_quiz/video/santa_video_with_subtitle_hiragana.mp4)
+- **メイン動画**: [santa_video_final.mp4](https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/santa_video_final.mp4)
+- **ひらがなサブタイトル版**: [santa_video_with_subtitle_hiragana.mp4](https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/santa_video_with_subtitle_hiragana.mp4)
 
 #### 🎮 ゲーム本体
-- **招待状**: https://lutelute.github.io/2025_Xmas_party_quiz/invitation.html
-- **謎解きゲーム**: https://lutelute.github.io/2025_Xmas_party_quiz/
+- **招待状**: https://lutelute.github.io/2025_Xmas_party_quiz/main/invitation.html
+- **謎解きゲーム**: https://lutelute.github.io/2025_Xmas_party_quiz/main/
 - **Apple Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/apple_puzzle/
 - **Autumn Cipher**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/autumn_cipher/momiji.html
 - **SOS Morse Sheep**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/morse_sheep/sheep1.html
 
 #### 📊 管理ツール
-- **データ管理**: https://lutelute.github.io/2025_Xmas_party_quiz/spreadsheet.html
+- **データ管理**: https://lutelute.github.io/2025_Xmas_party_quiz/others/spreadsheet.html
 - **Googleスプレッドシート**: [パーティー管理シート](https://docs.google.com/spreadsheets/d/1WYxvbkR39NJSZ3ltivddMzjYQbKcMeS-ZgQvCfLqON8/edit?usp=sharing)
 
 ### ローカルで遊ぶ
@@ -48,20 +48,15 @@ git clone https://github.com/lutelute/2025_Xmas_party_quiz.git
 cd 2025_Xmas_party_quiz
 ```
 
-2. ブラウザで `invitation.html` を開く
+2. ブラウザで `main/invitation.html` を開く
 
 ## 📁 ファイル構成
 
 ```
 2025_Xmas_party_quiz/
-├── invitation.html      # Santa's invitation letter (game introduction)
-├── index.html          # Main puzzle game
-├── spreadsheet.html    # Google Spreadsheet embed page
-├── video/              # Video files
-│   ├── santa_video_final.mp4
-│   ├── santa_video_with_subtitle_hiragana.mp4
-│   ├── santa_video_old.mp4
-│   └── ending_ultra_final.mp4  # Ending video
+├── main/               # Main game files
+│   ├── index.html      # Main puzzle game
+│   └── invitation.html # Santa's invitation letter (game introduction)
 ├── quiz/               # All puzzle games
 │   ├── apple_puzzle/   # Apple riddle puzzle
 │   │   └── index.html  # Apple puzzle game
@@ -71,8 +66,16 @@ cd 2025_Xmas_party_quiz
 │       ├── sheep1.html # Sheep 1 page
 │       ├── sheep2.html # Sheep 2 page
 │       └── celebration.html # Success celebration page
-├── sounds/
-│   └── README.md       # Audio effects documentation
+├── resources/          # Media and asset files
+│   ├── video/          # Video files
+│   │   ├── santa_video_final.mp4
+│   │   ├── santa_video_with_subtitle_hiragana.mp4
+│   │   ├── santa_video_old.mp4
+│   │   └── ending_ultra_final.mp4  # Ending video
+│   └── sounds/
+│       └── README.md   # Audio effects documentation
+├── others/             # Miscellaneous utilities
+│   └── spreadsheet.html # Google Spreadsheet embed page
 └── README.md           # This file
 ```
 
@@ -113,9 +116,9 @@ Web Audio APIを使用して以下の音を生成しています：
 パーティー参加者に送る案内動画：
 
 <video width="100%" controls>
-  <source src="https://lutelute.github.io/2025_Xmas_party_quiz/video/santa_video_final.mp4" type="video/mp4">
+  <source src="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/santa_video_final.mp4" type="video/mp4">
   お使いのブラウザではビデオタグがサポートされていません。
-  <a href="https://lutelute.github.io/2025_Xmas_party_quiz/video/santa_video_final.mp4">ビデオを直接開く</a>
+  <a href="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/santa_video_final.mp4">ビデオを直接開く</a>
 </video>
 
 ## 📊 管理用スプレッドシート
