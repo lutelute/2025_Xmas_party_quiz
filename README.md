@@ -134,6 +134,15 @@ Web Audio APIを使用して以下の音を生成しています：
   <a href="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/santa_video_final.mp4">ビデオを直接開く</a>
 </video>
 
+### エンディング動画
+ゲーム終了時の特別メッセージ：
+
+<video width="100%" controls>
+  <source src="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/ending_ultra_final.mp4" type="video/mp4">
+  お使いのブラウザではビデオタグがサポートされていません。
+  <a href="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/ending_ultra_final.mp4">エンディング動画を直接開く</a>
+</video>
+
 ## 📊 管理用スプレッドシート
 
 パーティーの進行管理用：
