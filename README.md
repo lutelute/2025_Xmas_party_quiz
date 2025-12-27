@@ -36,6 +36,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Apple Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/apple_puzzle/
 - **Autumn Cipher**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/autumn_cipher/momiji.html
 - **SOS Morse Sheep**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/morse_sheep/sheep1.html
+- **Sheep Location Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/sheep_hint.html
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
