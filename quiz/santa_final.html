@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎅 サンタの忘れ物 🎁</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 380px;
+            width: 100%;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: #c62828;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color: #2e7d32;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .message-box {
+            background: #fff8e1;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            line-height: 1.9;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .message-box p {
+            font-size: 1.05em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            outline: none;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #43a047;
+        }
+        
+        button {
+            padding: 14px 30px;
+            background: #43a047;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #2e7d32;
+        }
+        
+        .name-display {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #2e7d32;
+        }
+        
+        .task-box {
+            background: #e3f2fd;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px dashed #1976d2;
+        }
+        
+        .task-box p {
+            font-size: 1.1em;
+            color: #1565c0;
+            line-height: 1.8;
+        }
+        
+        .keyword {
+            color: #c62828;
+            font-weight: bold;
+        }
+        
+        .final-message {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 3px solid #ffc107;
+        }
+        
+        .final-message p {
+            font-size: 1.05em;
+            color: #333;
+            line-height: 2;
+            margin-bottom: 10px;
+        }
+        
+        .santa-secret {
+            background: #ffebee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .santa-secret p {
+            color: #c62828;
+            font-size: 1em;
+            line-height: 1.8;
+        }
+        
+        .video-link {
+            margin: 20px 0;
+        }
+        
+        .video-link a {
+            display: inline-block;
+            background: linear-gradient(135deg, #c62828 0%, #d32f2f 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .video-link a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.5);
+        }
+        
+        .envelope-message {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #ffc107;
+        }
+        
+        .envelope-message p {
+            font-size: 1.2em;
+            color: #e65100;
+            font-weight: bold;
+        }
+        
+        .note {
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 15px;
+        }
+        
+        .back-btn {
+            background: #78909c;
+            padding: 10px 18px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .back-btn:hover {
+            background: #546e7a;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        
+        <!-- Step 1: 名前入力 -->
+        <div class="step active" id="step1">
+            <div class="icon">🎁</div>
+            <h1>サンタの忘れ物</h1>
+            <div class="message-box">
+                <p>おめでとう！🎉</p>
+                <p>お宝を見つけたね！</p>
+                <p>開ける前に教えてね。</p>
+            </div>
+            <div class="input-group">
+                <label>✨ 君の名前を入力してね</label>
+                <input type="text" id="nameInput" placeholder="なまえ">
+            </div>
+            <button onclick="goToStep2()">次へ →</button>
+        </div>
+        
+        <!-- Step 2: お父さんお母さんに伝える -->
+        <div class="step" id="step2">
+            <div class="icon">👨‍👩‍👧‍👦</div>
+            <h2><span id="nameDisplay1"></span>へのおねがい</h2>
+            <div class="task-box">
+                <p>お父さんお母さんに<br>
+                今年一年<span class="keyword">いい年だったかどうか</span><br>
+                伝えてみてね！</p>
+            </div>
+            <div class="message-box">
+                <p>💭 今年の<span class="keyword">思い出を3つ</span><br>
+                お話ししてみよう！</p>
+                <p>・たのしかったこと</p>
+                <p>・がんばったこと</p>
+                <p>・うれしかったこと</p>
+            </div>
+            <p class="note">伝え終わったらボタンを押してね</p>
+            <div>
+                <button class="back-btn" onclick="goToStep(1)">← 戻る</button>
+                <button onclick="goToStep3()">伝えたよ！ ✨</button>
+            </div>
+        </div>
+        
+        <!-- Step 3: サンタからのメッセージ -->
+        <div class="step" id="step3">
+            <div class="icon">🎅</div>
+            <h1>サンタからのメッセージ</h1>
+            <div class="name-display">🌟 <span id="nameDisplay2"></span> へ 🌟</div>
+            <div class="santa-secret">
+                <p>じつはね...</p>
+                <p>「<span class="keyword">サンタの忘れ物</span>」は<br>
+                君たちが今年<span class="keyword">いい一年だったか</span><br>
+                聞くのを忘れていたんだ。</p>
+            </div>
+            <div class="video-link">
+                <a href="https://lutelute.github.io/2025_Xmas_party_quiz/resources/video/ending_ultra_final.mp4" target="_blank">
+                    🎬 動画を見る ▶
+                </a>
+            </div>
+            <div class="envelope-message">
+                <p>🎁 この封筒は受け取ってね！</p>
+            </div>
+            <div>
+                <button class="back-btn" onclick="goToStep(2)">← 戻る</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let userName = '';
+        
+        function goToStep2() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name === '') {
+                alert('名前を入力してね！');
+                return;
+            }
+            userName = name;
+            document.getElementById('nameDisplay1').textContent = name;
+            document.getElementById('nameDisplay2').textContent = name;
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        }
+        
+        function goToStep3() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+        }
+        
+        function goToStep(num) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + num).classList.add('active');
+        }
+        
+        // Enterキーで送信
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') goToStep2();
+        });
+    </script>
+</body>
+</html>
