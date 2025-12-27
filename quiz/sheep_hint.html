@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐑 ヒント 🐑</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3a5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 350px;
+        }
+        
+        .sheep-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            color: #4a7c59;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+        }
+        
+        .hint {
+            background: #f0f7e6;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #7cb342;
+        }
+        
+        .hint p {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .hint strong {
+            color: #e65100;
+            font-size: 1.1em;
+        }
+        
+        .note {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        
+        .floor-hint {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #fff3e0;
+            border-radius: 10px;
+        }
+        
+        .floor-hint strong {
+            color: #d84315;
+        }
+        
+        .paper-icon {
+            display: inline-block;
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="sheep-icon">🐑🐑</div>
+        <h1>さがしてみよう！</h1>
+        <div class="hint">
+            <p>
+                <span class="paper-icon">📄</span><strong>紙の洋服</strong><span class="paper-icon">📄</span><br>
+                をきた<br>
+                <strong>2匹の羊</strong>をさがしてね
+            </p>
+        </div>
+        <p class="floor-hint">📍 1匹は<strong>1階</strong>、もう1匹は<strong>2階</strong>にいるよ</p>
+        <p class="note">🔍 羊が何か言っているよ...</p>
+    </div>
+</body>
+</html>
