@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍎 次の場所は？ 🗼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 360px;
+            width: 100%;
+        }
+        
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: #1565c0;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .question-box {
+            background: #fff8e1;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+            line-height: 1.8;
+            border-left: 5px solid #ffb300;
+        }
+        
+        .question-box p {
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .keyword {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            outline: none;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #1565c0;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #0d47a1;
+        }
+        
+        .error {
+            color: #d32f2f;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .final-box {
+            background: #e8f5e9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .final-box p {
+            font-size: 1.2em;
+            color: #2e7d32;
+            font-weight: bold;
+            line-height: 1.7;
+        }
+        
+        .treasure {
+            background: #fce4ec;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 2px dashed #e91e63;
+        }
+        
+        .treasure p {
+            font-size: 1.1em;
+            color: #c2185b;
+            font-weight: bold;
+            line-height: 1.7;
+        }
+        
+        .keywords {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .keywords-title {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 3px;
+        }
+        
+        .apple {
+            display: inline-block;
+            animation: fall 2s ease-in-out infinite;
+        }
+        
+        @keyframes fall {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+        
+        .tower {
+            display: inline-block;
+            transform: rotate(5deg);
+        }
+        
+        .hint {
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .back-btn {
+            background: #78909c;
+            padding: 10px 18px;
+            font-size: 0.9em;
+        }
+        
+        .back-btn:hover {
+            background: #546e7a;
+        }
+        
+        .reset-btn {
+            background: #ef5350;
+            padding: 10px 18px;
+            font-size: 0.9em;
+        }
+        
+        .reset-btn:hover {
+            background: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon"><span class="apple">🍎</span> → <span class="tower">🗼</span></div>
+        <h1>次の場所をさがそう！</h1>
+        
+        <!-- Step 1: リンゴの答え -->
+        <div class="step active" id="step1">
+            <div class="question-box">
+                <p>🍎 最初の例題の答えは<br>なんだったかな？</p>
+            </div>
+            <div class="input-area">
+                <input type="text" id="answer1" placeholder="ひらがなで入力">
+                <button onclick="checkAnswer1()">OK</button>
+            </div>
+            <p class="error" id="error1">❌ ちがうよ、もう一度！</p>
+        </div>
+        
+        <!-- Step 2: ピサの答え -->
+        <div class="step" id="step2">
+            <div class="success">✅ 正解！リンゴだね🍎</div>
+            <div class="question-box">
+                <p>🍎 リンゴが<span class="keyword">落ちた</span>ことで<br>
+                ニュートンは引力を発見した。</p>
+                <p>でも「ものが<span class="keyword">落ちる</span>」実験を<br>
+                もっと昔にやった人がいるよ。</p>
+                <p>その人が実験した<br>
+                「かたむいた塔」の名前は？</p>
+            </div>
+            <div class="input-area">
+                <input type="text" id="answer2" placeholder="○○の斜塔">
+                <button onclick="checkAnswer2()">OK</button>
+            </div>
+            <p class="error" id="error2">❌ ちがうよ、もう一度！</p>
+            <div class="keywords">
+                <p class="keywords-title">🔑 ヒント</p>
+                <span class="tag">ガリレオ</span>
+                <span class="tag">イタリア</span>
+                <span class="tag">落下実験</span>
+            </div>
+            <div class="nav-buttons">
+                <button class="back-btn" onclick="goBack(2, 1)">← 戻る</button>
+            </div>
+        </div>
+        
+        <!-- Final: 場所の案内 -->
+        <div class="step" id="step3">
+            <div class="success">✅ 正解！ピサの斜塔🗼</div>
+            <div class="final-box">
+                <p>📚 <span class="keyword">2階</span>の<br>「<span class="keyword">知識が眠る棚</span>」へ行こう！</p>
+            </div>
+            <div class="treasure">
+                <p>🔍 「<span class="keyword">ピサの斜塔</span>」の絵がある<br>お宝箱をさがしてね！</p>
+            </div>
+            <p class="hint">📖 本の中に何かあるかも...？</p>
+            <div class="nav-buttons">
+                <button class="back-btn" onclick="goBack(3, 2)">← 戻る</button>
+                <button class="reset-btn" onclick="resetAll()">🔄 最初から</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // カタカナをひらがなに変換
+        function kataToHira(str) {
+            return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+                return String.fromCharCode(match.charCodeAt(0) - 0x60);
+            });
+        }
+        
+        // 正規化（小文字、ひらがな統一）
+        function normalize(str) {
+            return kataToHira(str.trim().toLowerCase());
+        }
+        
+        function checkAnswer1() {
+            const answer = normalize(document.getElementById('answer1').value);
+            
+            if (answer === 'りんご' || answer === 'ringo' || answer === 'apple' || answer === '林檎') {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            } else {
+                document.getElementById('error1').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('error1').style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        function checkAnswer2() {
+            const answer = normalize(document.getElementById('answer2').value);
+            
+            if (answer === 'ぴさ' || answer === 'pisa' || 
+                answer === 'ぴさのしゃとう' || answer === 'ぴさの斜塔') {
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step3').classList.add('active');
+            } else {
+                document.getElementById('error2').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('error2').style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        function goBack(fromStep, toStep) {
+            document.getElementById('step' + fromStep).classList.remove('active');
+            document.getElementById('step' + toStep).classList.add('active');
+        }
+        
+        function resetAll() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('answer1').value = '';
+            document.getElementById('answer2').value = '';
+        }
+        
+        // Enterキーで送信
+        document.getElementById('answer1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAnswer1();
+        });
+        document.getElementById('answer2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAnswer2();
+        });
+    </script>
+</body>
+</html>
