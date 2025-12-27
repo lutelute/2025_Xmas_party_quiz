@@ -39,6 +39,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Sheep Location Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/sheep_hint/
 - **PISA Tower Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/pisa_hint/
 - **Glasses Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/megane_hint/
+- **Santa Final Message**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/santa_final.html
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
