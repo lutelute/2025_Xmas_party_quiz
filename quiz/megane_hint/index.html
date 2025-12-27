@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕶️ ヒント 🕶️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #ffe0b2 0%, #ffccbc 50%, #d7ccc8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 350px;
+        }
+        
+        .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: wobble 1s ease-in-out infinite;
+        }
+        
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        h1 {
+            color: #5d4037;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+        }
+        
+        .hint {
+            background: #fff3e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .hint p {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .hint strong {
+            color: #e65100;
+            font-size: 1.2em;
+        }
+        
+        .sub-hint {
+            background: #fbe9e7;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .sub-hint p {
+            color: #bf360c;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .note {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        
+        .warning {
+            color: #d32f2f;
+            font-size: 0.95em;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        
+        .glasses {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">🧔🕶️</div>
+        <h1>さがしてみよう！</h1>
+        <div class="hint">
+            <p>
+                <span class="glasses">👓</span><strong>変なメガネ</strong><span class="glasses">👓</span><br>
+                をかけた<br>
+                <strong>おじさん</strong>をさがしてね
+            </p>
+        </div>
+        <div class="sub-hint">
+            <p>💡 ヒント：本当に「<strong>変</strong>」だよ</p>
+        </div>
+        <p class="note">🔍 おじさんが何か持っているかも...？</p>
+        <p class="warning">⚠️ 注意：食べられないようにね！</p>
+    </div>
+</body>
+</html>
