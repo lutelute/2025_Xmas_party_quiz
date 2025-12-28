@@ -146,7 +146,7 @@
             ⚠️ 曲は長いので、暗号のパターンがわかったら途中で止めてOKです。
         </div>
 
-        <div class="code-hint" style="cursor: pointer;" onclick="showHint()">
+        <div class="code-hint" style="cursor: pointer;" onclick="showHint(this)">
             💡 ヒントを見る（クリック）
         </div>
         
@@ -156,7 +156,7 @@
 
         <div class="music-grid">
             <div class="music-card">
-                <div class="music-title">🎸 ギター版</div>
+                <div class="music-title">🎵 ウクレレ版</div>
                 <button class="play-button" onclick="togglePlay('guitar')">▶️ 再生</button>
                 <audio id="guitar" preload="metadata">
                     <source src="../../resources/music/クリスマス DECA CAFE_guiter.mp3" type="audio/mpeg">
@@ -215,9 +215,9 @@
     <script>
         let currentlyPlaying = null;
 
-        function showHint() {
+        function showHint(element) {
             document.getElementById('secret-hint').style.display = 'block';
-            event.target.style.display = 'none';
+            element.style.display = 'none';
         }
 
         function togglePlay(audioId) {
