@@ -41,6 +41,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Glasses Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/megane_hint/
 - **Santa Final Message**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/santa_final/
 - **Music Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/music_puzzle/
+- **Station Quiz**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/station_quiz/
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
@@ -82,6 +83,8 @@ cd 2025_Xmas_party_quiz
 │   │   └── index.html  # Music puzzle with DECA CAFE hint
 │   ├── santa_final/    # Santa's final message
 │   │   └── index.html  # Final message and video link
+│   ├── station_quiz/   # Station quiz puzzle
+│   │   └── index.html  # Station quiz game
 │   └── treasure_final/ # Final treasure chest puzzle
 │       └── index.html  # Treasure unlocking game
 ├── resources/          # Media and asset files

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解き</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.6;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.1em;
+        }
+
+        .hint {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.8;
+        }
+
+        .train-animation {
+            margin-top: 30px;
+            font-size: 40px;
+            overflow: hidden;
+            position: relative;
+            height: 50px;
+        }
+
+        .train {
+            position: absolute;
+            animation: train-move 4s linear infinite;
+        }
+
+        @keyframes train-move {
+            0% { left: -50px; }
+            100% { left: calc(100% + 50px); }
+        }
+
+        .track {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                #bdc3c7 0px,
+                #bdc3c7 20px,
+                transparent 20px,
+                transparent 30px
+            );
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🚉</div>
+        
+        <div class="message-box">
+            🔍 鉄道の駅を探せ
+        </div>
+        
+        <p class="hint">ヒント: この家のどこかに駅がある...</p>
+        
+        <div class="train-animation">
+            <div class="track"></div>
+            <div class="train">🚃</div>
+        </div>
+    </div>
+</body>
+</html>
