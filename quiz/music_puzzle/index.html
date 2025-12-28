@@ -146,8 +146,12 @@
             ⚠️ 曲は長いので、暗号のパターンがわかったら途中で止めてOKです。
         </div>
 
-        <div class="code-hint">
-            ヒント: 10進法のカフェで一休み？
+        <div class="code-hint" style="cursor: pointer;" onclick="showHint()">
+            💡 ヒントを見る（クリック）
+        </div>
+        
+        <div id="secret-hint" class="code-hint" style="display: none;">
+            ヒント: DECA CAFE
         </div>
 
         <div class="music-grid">
@@ -210,6 +214,11 @@
 
     <script>
         let currentlyPlaying = null;
+
+        function showHint() {
+            document.getElementById('secret-hint').style.display = 'block';
+            event.target.style.display = 'none';
+        }
 
         function togglePlay(audioId) {
             const audio = document.getElementById(audioId);
