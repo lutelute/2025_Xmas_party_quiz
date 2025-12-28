@@ -39,7 +39,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Sheep Location Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/sheep_hint/
 - **PISA Tower Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/pisa_hint/
 - **Glasses Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/megane_hint/
-- **Santa Final Message**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/santa_final.html
+- **Santa Final Message**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/santa_final/
 - **Music Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/music_puzzle/
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
@@ -80,6 +80,8 @@ cd 2025_Xmas_party_quiz
 │   │   └── index.html  # Glasses hint game
 │   ├── music_puzzle/   # Music code progression puzzle
 │   │   └── index.html  # Music puzzle with DECA CAFE hint
+│   ├── santa_final/    # Santa's final message
+│   │   └── index.html  # Final message and video link
 │   └── treasure_final/ # Final treasure chest puzzle
 │       └── index.html  # Treasure unlocking game
 ├── resources/          # Media and asset files
