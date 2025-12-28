@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解き</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0d0705 100%);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #f5f0e8 0%, #e8e0d5 100%);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 25px;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 35px 25px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.8;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.05em;
+        }
+
+        .message-box .highlight {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .piano-container {
+            margin-top: 35px;
+            padding: 20px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .piano-keys {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            height: 80px;
+            position: relative;
+        }
+
+        .white-key {
+            width: 30px;
+            height: 80px;
+            background: linear-gradient(180deg, #fff 0%, #e8e8e8 100%);
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            animation: key-press 2s ease-in-out infinite;
+        }
+
+        .white-key:nth-child(1) { animation-delay: 0s; }
+        .white-key:nth-child(2) { animation-delay: 0.3s; }
+        .white-key:nth-child(3) { animation-delay: 0.6s; }
+        .white-key:nth-child(4) { animation-delay: 0.9s; }
+        .white-key:nth-child(5) { animation-delay: 1.2s; }
+        .white-key:nth-child(6) { animation-delay: 1.5s; }
+        .white-key:nth-child(7) { animation-delay: 1.8s; }
+
+        @keyframes key-press {
+            0%, 80%, 100% { 
+                transform: translateY(0); 
+                background: linear-gradient(180deg, #fff 0%, #e8e8e8 100%);
+            }
+            10% { 
+                transform: translateY(5px); 
+                background: linear-gradient(180deg, #e8e8e8 0%, #d0d0d0 100%);
+            }
+        }
+
+        .music-notes {
+            margin-top: 25px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 24px;
+            animation: float-up 3s ease-out infinite;
+            opacity: 0;
+        }
+
+        .note:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .note:nth-child(2) { left: 30%; animation-delay: 0.5s; }
+        .note:nth-child(3) { left: 50%; animation-delay: 1s; }
+        .note:nth-child(4) { left: 70%; animation-delay: 1.5s; }
+        .note:nth-child(5) { left: 90%; animation-delay: 2s; }
+
+        @keyframes float-up {
+            0% { 
+                transform: translateY(30px) rotate(0deg); 
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-50px) rotate(20deg); 
+                opacity: 0;
+            }
+        }
+
+        .hint {
+            margin-top: 25px;
+            font-size: 16px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .ear-icon {
+            display: inline-block;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🎹</div>
+        
+        <div class="message-box">
+            小さい<span class="highlight">PIANO</span>から<br>
+            音が流れている...<br>
+            <span class="ear-icon">👂</span> 聞いてみよう
+        </div>
+        
+        <div class="piano-container">
+            <div class="piano-keys">
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+                <div class="white-key"></div>
+            </div>
+        </div>
+        
+        <div class="music-notes">
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+            <span class="note">♫</span>
+            <span class="note">♪</span>
+        </div>
+        
+        <p class="hint">どこかで小さなピアノの音色が...</p>
+    </div>
+</body>
+</html>
