@@ -40,6 +40,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **PISA Tower Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/pisa_hint/
 - **Glasses Hint**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/megane_hint/
 - **Santa Final Message**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/santa_final.html
+- **Music Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/music_puzzle/
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
@@ -77,6 +78,8 @@ cd 2025_Xmas_party_quiz
 │   │   └── index.html  # PISA tower hint game
 │   ├── megane_hint/    # Glasses hint puzzle
 │   │   └── index.html  # Glasses hint game
+│   ├── music_puzzle/   # Music code progression puzzle
+│   │   └── index.html  # Music puzzle with DECA CAFE hint
 │   └── treasure_final/ # Final treasure chest puzzle
 │       └── index.html  # Treasure unlocking game
 ├── resources/          # Media and asset files
@@ -85,6 +88,12 @@ cd 2025_Xmas_party_quiz
 │   │   ├── santa_video_with_subtitle_hiragana.mp4
 │   │   ├── santa_video_old.mp4
 │   │   └── ending_ultra_final.mp4  # Ending video
+│   ├── music/          # Music files for puzzles
+│   │   ├── クリスマス DECA CAFE_guiter.mp3
+│   │   ├── クリスマス DECA CAFE_シャカシャカ.mp3
+│   │   ├── クリスマス DECA CAFE_JAZZ.mp3
+│   │   ├── クリスマス DECA CAFE_少し暗め.mp3
+│   │   └── クリスマス DECA CAFE_fusion風.mp3
 │   └── sounds/
 │       └── README.md   # Audio effects documentation
 ├── others/             # Miscellaneous utilities

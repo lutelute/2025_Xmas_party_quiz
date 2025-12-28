@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 音楽パズル - DECA CAFE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hint {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid gold;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .music-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #fff;
+        }
+
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .play-button:hover {
+            background: linear-gradient(45deg, #ee5a52, #ff6b6b);
+            transform: scale(1.05);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .play-button.playing {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .mystery {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .mystery h2 {
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .mystery p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .code-hint {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 音楽パズル</h1>
+        
+        <div class="hint">
+            💡 これらの音楽には隠された暗号が含まれています。コード進行に注目してください！
+        </div>
+
+        <div class="code-hint">
+            ヒント: DECA CAFE
+        </div>
+
+        <div class="music-grid">
+            <div class="music-card">
+                <div class="music-title">🎸 ギター版</div>
+                <button class="play-button" onclick="togglePlay('guitar')">▶️ 再生</button>
+                <audio id="guitar" preload="metadata">
+                    <source src="../../resources/music/クリスマス DECA CAFE_guiter.mp3" type="audio/mpeg">
+                    お使いのブラウザは音声ファイルをサポートしていません。
+                </audio>
+            </div>
+
+            <div class="music-card">
+                <div class="music-title">🥁 シャカシャカ版</div>
+                <button class="play-button" onclick="togglePlay('shaka')">▶️ 再生</button>
+                <audio id="shaka" preload="metadata">
+                    <source src="../../resources/music/クリスマス DECA CAFE_シャカシャカ.mp3" type="audio/mpeg">
+                    お使いのブラウザは音声ファイルをサポートしていません。
+                </audio>
+            </div>
+
+            <div class="music-card">
+                <div class="music-title">🎷 JAZZ版</div>
+                <button class="play-button" onclick="togglePlay('jazz')">▶️ 再生</button>
+                <audio id="jazz" preload="metadata">
+                    <source src="../../resources/music/クリスマス DECA CAFE_JAZZ.mp3" type="audio/mpeg">
+                    お使いのブラウザは音声ファイルをサポートしていません。
+                </audio>
+            </div>
+
+            <div class="music-card">
+                <div class="music-title">🌙 少し暗め版</div>
+                <button class="play-button" onclick="togglePlay('dark')">▶️ 再生</button>
+                <audio id="dark" preload="metadata">
+                    <source src="../../resources/music/クリスマス DECA CAFE_少し暗め.mp3" type="audio/mpeg">
+                    お使いのブラウザは音声ファイルをサポートしていません。
+                </audio>
+            </div>
+
+            <div class="music-card">
+                <div class="music-title">🎺 Fusion風版</div>
+                <button class="play-button" onclick="togglePlay('fusion')">▶️ 再生</button>
+                <audio id="fusion" preload="metadata">
+                    <source src="../../resources/music/クリスマス DECA CAFE_fusion風.mp3" type="audio/mpeg">
+                    お使いのブラウザは音声ファイルをサポートしていません。
+                </audio>
+            </div>
+        </div>
+
+        <div class="mystery">
+            <h2>🔍 謎解き</h2>
+            <p>
+                これらの音楽は全て同じコード進行で作曲されています。<br>
+                ヒント「DECA CAFE」を使って、次の場所を見つけてください！<br><br>
+                <strong>音符と文字の関係を考えてみましょう...</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentlyPlaying = null;
+
+        function togglePlay(audioId) {
+            const audio = document.getElementById(audioId);
+            const button = audio.parentElement.querySelector('.play-button');
+            
+            // Stop any currently playing audio
+            if (currentlyPlaying && currentlyPlaying !== audio) {
+                currentlyPlaying.pause();
+                currentlyPlaying.currentTime = 0;
+                const prevButton = currentlyPlaying.parentElement.querySelector('.play-button');
+                prevButton.textContent = '▶️ 再生';
+                prevButton.classList.remove('playing');
+            }
+
+            if (audio.paused) {
+                audio.play();
+                button.textContent = '⏸️ 停止';
+                button.classList.add('playing');
+                currentlyPlaying = audio;
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                button.textContent = '▶️ 再生';
+                button.classList.remove('playing');
+                currentlyPlaying = null;
+            }
+
+            // Reset button when audio ends
+            audio.onended = function() {
+                button.textContent = '▶️ 再生';
+                button.classList.remove('playing');
+                currentlyPlaying = null;
+            };
+        }
+
+        // Add some visual effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.music-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
