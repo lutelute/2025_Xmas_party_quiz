@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>謎解き</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 50%, #000000 100%);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(30, 30, 50, 0.95);
+            border: 2px solid #4a4a6a;
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 60px rgba(100, 100, 200, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 25px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+            100% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)); }
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+            border: 1px solid #5a5a7a;
+            color: #e0e0ff;
+            padding: 35px 25px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.8;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.05em;
+        }
+
+        .message-box .highlight {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .depth-indicator {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: #6a6a9a;
+            animation: point-down 1s ease-in-out infinite;
+        }
+
+        @keyframes point-down {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(8px); opacity: 1; }
+        }
+
+        .underground {
+            margin-top: 20px;
+            padding: 15px;
+            background: repeating-linear-gradient(
+                0deg,
+                #2a2a3a 0px,
+                #2a2a3a 10px,
+                #1a1a2a 10px,
+                #1a1a2a 20px
+            );
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .train-icon {
+            font-size: 35px;
+            position: relative;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .key-sparkle {
+            position: absolute;
+            font-size: 20px;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        .key-sparkle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .key-sparkle:nth-child(2) { top: 20%; right: 15%; animation-delay: 0.3s; }
+        .key-sparkle:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 0.6s; }
+        .key-sparkle:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 0.9s; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="key-sparkle">✨</span>
+        <span class="key-sparkle">✨</span>
+        <span class="key-sparkle">✨</span>
+        <span class="key-sparkle">✨</span>
+        
+        <div class="icon">🔑</div>
+        
+        <div class="message-box">
+            🚃 電車の<span class="highlight">地下深く</span>に<br>
+            <span class="highlight">宝への鍵</span>が眠る
+        </div>
+        
+        <div class="depth-indicator">
+            <span class="arrow">▼</span>
+            <span class="arrow">▼</span>
+            <span class="arrow">▼</span>
+        </div>
+        
+        <div class="underground">
+            <div class="train-icon">🚃</div>
+        </div>
+    </div>
+</body>
+</html>
