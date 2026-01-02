@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 宝箱の鍵</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .lock-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .riddle-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .riddle-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .riddle-text {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.8;
+        }
+
+        .riddle-text .emphasis {
+            font-size: 28px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .hint {
+            font-size: 14px;
+            color: #666;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lock-icon">🔐</div>
+        <h1 class="title">宝箱の鍵</h1>
+        
+        <div class="riddle-box">
+            <div class="riddle-title">✨ なぞなぞ ✨</div>
+            <div class="riddle-text">
+                ねえねの名前の<br>
+                <span class="emphasis">子音</span><br>
+                が開く鍵
+            </div>
+        </div>
+
+        <div class="hint">
+            💡 ヒント：ローマ字で書いたとき、<br>
+            a, i, u, e, o 以外の文字だよ
+        </div>
+    </div>
+</body>
+</html>
