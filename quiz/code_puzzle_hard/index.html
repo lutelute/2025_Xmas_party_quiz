@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3桁の暗号を解け！【上級編】</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #1a1a2e;
+            font-size: 1.7em;
+            margin-bottom: 5px;
+        }
+
+        .difficulty {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .hints-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hints-title {
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hint:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .hint:last-child {
+            margin-bottom: 0;
+        }
+
+        .hint-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .hint-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.15em;
+            color: #1a1a2e;
+            margin-right: 12px;
+            letter-spacing: 3px;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .hint-text {
+            color: #444;
+            font-size: 0.85em;
+            flex: 1;
+        }
+
+        .hint-text .count {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .legend {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 0.8em;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 6px;
+        }
+
+        .legend-item {
+            color: #856404;
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-icon {
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            text-align: center;
+        }
+
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .code-input input {
+            width: 65px;
+            height: 75px;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: bold;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .code-input input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+            background: white;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 45px;
+            font-size: 1.05em;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result.correct {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            display: block;
+        }
+
+        .result.wrong {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            display: block;
+        }
+
+        .attempts {
+            text-align: center;
+            margin-top: 12px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .solution-hint {
+            margin-top: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 18px;
+        }
+
+        .hint-btn {
+            background: none;
+            border: 1px solid #aaa;
+            color: #666;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .hint-btn:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .extra-hint {
+            margin-top: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #e8f4ff, #d6eaff);
+            border-radius: 8px;
+            color: #0056b3;
+            font-size: 0.88em;
+            display: none;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .hint-progress {
+            margin-top: 8px;
+            font-size: 0.75em;
+            color: #999;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            top: -12px;
+            animation: fall 3.5s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(1080deg);
+            }
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            .code-input input {
+                width: 55px;
+                height: 65px;
+                font-size: 1.8em;
+            }
+            
+            .hint {
+                flex-wrap: wrap;
+            }
+            
+            .hint-text {
+                width: 100%;
+                margin-top: 5px;
+                margin-left: 34px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 3桁の暗号を解け！</h1>
+            <span class="difficulty">★★★ 上級 ★★★</span>
+            <p class="subtitle">6つのヒントから正しい3桁の数字を推理せよ</p>
+        </div>
+
+        <div class="timer" id="timer">経過時間: 00:00</div>
+
+        <div class="hints-section">
+            <div class="hints-title">📋 ヒント</div>
+            
+            <div class="hint">
+                <span class="hint-number">1</span>
+                <span class="hint-code">012</span>
+                <span class="hint-text">→ 正解の数字は含まれていない</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">2</span>
+                <span class="hint-code">489</span>
+                <span class="hint-text">→ 正解の数字は含まれていない</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">3</span>
+                <span class="hint-code">657</span>
+                <span class="hint-text">→ <span class="count">2つ</span>の数字が正解だが位置が違う</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">4</span>
+                <span class="hint-code">375</span>
+                <span class="hint-text">→ <span class="count">3つ</span>の数字が正解で、<span class="count">1つだけ</span>位置も合っている</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">5</span>
+                <span class="hint-code">753</span>
+                <span class="hint-text">→ <span class="count">3つ</span>の数字が正解で、<span class="count">1つだけ</span>位置も合っている</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">6</span>
+                <span class="hint-code">537</span>
+                <span class="hint-text">→ <span class="count">3つ</span>の数字が正解で、<span class="count">1つだけ</span>位置も合っている</span>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">💡 ルール説明</div>
+            <div class="legend-item">
+                <span class="legend-icon">✓</span>
+                <span>「位置も合っている」＝ 数字と桁の両方が正解</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">△</span>
+                <span>「位置が違う」＝ 数字は正解だが違う桁にある</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-icon">✗</span>
+                <span>「含まれていない」＝ その数字は正解に存在しない</span>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="code-input">
+                <input type="text" maxlength="1" id="digit1" inputmode="numeric" pattern="[0-9]">
+                <input type="text" maxlength="1" id="digit2" inputmode="numeric" pattern="[0-9]">
+                <input type="text" maxlength="1" id="digit3" inputmode="numeric" pattern="[0-9]">
+            </div>
+            <button class="submit-btn" onclick="checkAnswer()">解答する</button>
+            
+            <div id="result" class="result"></div>
+            <div class="attempts" id="attempts"></div>
+        </div>
+
+        <div class="solution-hint">
+            <button class="hint-btn" onclick="showExtraHint()">💭 ヒントが欲しい...</button>
+            <div id="extraHint" class="extra-hint"></div>
+            <div class="hint-progress" id="hintProgress"></div>
+        </div>
+    </div>
+
+    <script>
+        const ANSWER = "735";
+        let attempts = 0;
+        let hintLevel = 0;
+        let startTime = Date.now();
+        let timerInterval;
+
+        const hints = [
+            "【ステップ1】ヒント①②から、0,1,2,4,8,9 は正解に含まれません。残る候補は 3,5,6,7 です。",
+            "【ステップ2】ヒント③「657で2つ正解」を考えます。候補の中で657に含まれるのは 5,6,7。このうち2つが正解です。",
+            "【ステップ3】ヒント④「375で3つ正解」から、3,7,5 が全て正解と分かります。つまり6は不正解です。",
+            "【ステップ4】ヒント③に戻ると「657で2つ正解、両方位置違い」は 5と7 のこと。5は2桁目ではない、7は3桁目ではない。",
+            "【ステップ5】ヒント④⑤⑥はそれぞれ「3つ正解、1つだけ位置合い」です。それぞれで位置が合っている数字が違うはず...",
+            "【ステップ6】ヒント④(375): 5が3桁目で位置合いと仮定 → ヒント⑤(753): 7が1桁目で位置合い → ヒント⑥(537): 3が2桁目で位置合い",
+            "【最終ヒント】全ての条件を満たす唯一の解は...7から始まります。"
+        ];
+
+        // Timer
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const seconds = String(elapsed % 60).padStart(2, '0');
+            document.getElementById('timer').textContent = `経過時間: ${minutes}:${seconds}`;
+        }
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // Auto-focus and move to next input
+        document.querySelectorAll('.code-input input').forEach((input, index, inputs) => {
+            input.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        });
+
+        function checkAnswer() {
+            const d1 = document.getElementById('digit1').value;
+            const d2 = document.getElementById('digit2').value;
+            const d3 = document.getElementById('digit3').value;
+            
+            if (!d1 || !d2 || !d3) {
+                showResult('3桁すべて入力してください', false);
+                return;
+            }
+
+            const userAnswer = d1 + d2 + d3;
+            attempts++;
+
+            if (userAnswer === ANSWER) {
+                clearInterval(timerInterval);
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                let timeMsg = minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
+                showResult(`🎉 正解！おめでとうございます！\nクリアタイム: ${timeMsg} / 挑戦回数: ${attempts}回`, true);
+                createConfetti();
+            } else {
+                // ヒントを出す
+                let feedback = analyzeFeedback(userAnswer);
+                showResult(`❌ 不正解\n${feedback}`, false);
+            }
+
+            document.getElementById('attempts').textContent = `挑戦回数: ${attempts}回`;
+        }
+
+        function analyzeFeedback(guess) {
+            let correctPos = 0;
+            let correctNum = 0;
+            const answerArr = ANSWER.split('');
+            const guessArr = guess.split('');
+            const answerUsed = [false, false, false];
+            const guessUsed = [false, false, false];
+
+            // Count correct position
+            for (let i = 0; i < 3; i++) {
+                if (guessArr[i] === answerArr[i]) {
+                    correctPos++;
+                    answerUsed[i] = true;
+                    guessUsed[i] = true;
+                }
+            }
+
+            // Count correct number wrong position
+            for (let i = 0; i < 3; i++) {
+                if (!guessUsed[i]) {
+                    for (let j = 0; j < 3; j++) {
+                        if (!answerUsed[j] && guessArr[i] === answerArr[j]) {
+                            correctNum++;
+                            answerUsed[j] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (correctPos === 0 && correctNum === 0) {
+                return "正解の数字は含まれていない";
+            } else if (correctPos === 0) {
+                return `${correctNum}つの数字が正解だが位置が違う`;
+            } else if (correctNum === 0) {
+                return `${correctPos}つの数字が正解で位置も合っている`;
+            } else {
+                return `${correctPos + correctNum}つの数字が正解（${correctPos}つ位置合い、${correctNum}つ位置違い）`;
+            }
+        }
+
+        function showResult(message, isCorrect) {
+            const result = document.getElementById('result');
+            result.innerHTML = message.replace(/\n/g, '<br>');
+            result.className = 'result ' + (isCorrect ? 'correct' : 'wrong');
+        }
+
+        function showExtraHint() {
+            const extraHint = document.getElementById('extraHint');
+            const progress = document.getElementById('hintProgress');
+            
+            if (hintLevel < hints.length) {
+                extraHint.textContent = hints[hintLevel];
+                extraHint.style.display = 'block';
+                hintLevel++;
+                progress.textContent = `ヒント ${hintLevel}/${hints.length}`;
+            } else {
+                extraHint.textContent = '💡 これ以上のヒントはありません。答えは 7□□ です...';
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#ffd700', '#00ff88', '#ff69b4', '#00bfff'];
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        // Focus first input on load
+        document.getElementById('digit1').focus();
+    </script>
+</body>
+</html>

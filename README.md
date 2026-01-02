@@ -46,6 +46,7 @@ Santa Claus seems to have forgotten something important. This is a puzzle game w
 - **Underground Key**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/underground_key/
 - **Nazo Cryptex**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/nazo_cryptex/
 - **Code Puzzle**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/code_puzzle/
+- **Code Puzzle Hard**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/code_puzzle_hard/
 - **Treasure Final**: https://lutelute.github.io/2025_Xmas_party_quiz/quiz/treasure_final/
 
 #### 📊 管理ツール
@@ -97,6 +98,8 @@ cd 2025_Xmas_party_quiz
 │   │   └── index.html  # Nazo cryptex riddle game
 │   ├── code_puzzle/    # 3-digit code breaking puzzle
 │   │   └── index.html  # Interactive logic-based deduction game
+│   ├── code_puzzle_hard/ # Advanced 3-digit code breaking puzzle
+│   │   └── index.html  # Advanced logic puzzle with timer and detailed feedback
 │   └── treasure_final/ # Final treasure chest puzzle
 │       └── index.html  # Treasure unlocking game
 ├── resources/          # Media and asset files
