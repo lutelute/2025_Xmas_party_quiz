@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3桁の暗号を解け！</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .hints-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .hints-title {
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #e94560;
+        }
+
+        .hint:last-child {
+            margin-bottom: 0;
+        }
+
+        .hint-number {
+            background: #e94560;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .hint-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #1a1a2e;
+            margin-right: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hint-text {
+            color: #444;
+            font-size: 0.9em;
+        }
+
+        .legend {
+            background: #fff3cd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 25px;
+            font-size: 0.85em;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .legend-item {
+            color: #856404;
+            margin: 3px 0;
+        }
+
+        .input-section {
+            text-align: center;
+        }
+
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .code-input input {
+            width: 60px;
+            height: 70px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .code-input input:focus {
+            border-color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #e94560, #c73659);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .result.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .result.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .attempts {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: fall 3s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        .solution-hint {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .hint-btn {
+            background: none;
+            border: 1px solid #999;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .hint-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .extra-hint {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f4ff;
+            border-radius: 8px;
+            color: #0066cc;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 3桁の暗号を解け！</h1>
+        <p class="subtitle">ヒントを元に正しい3桁の数字を推理せよ</p>
+
+        <div class="hints-section">
+            <div class="hints-title">📋 ヒント</div>
+            
+            <div class="hint">
+                <span class="hint-number">1</span>
+                <span class="hint-code">682</span>
+                <span class="hint-text">→ 1つの数字が正解で位置も合っている</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">2</span>
+                <span class="hint-code">614</span>
+                <span class="hint-text">→ 1つの数字が正解だが位置が違う</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">3</span>
+                <span class="hint-code">206</span>
+                <span class="hint-text">→ 2つの数字が正解だが位置が違う</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">4</span>
+                <span class="hint-code">738</span>
+                <span class="hint-text">→ 正解の数字は含まれていない</span>
+            </div>
+            
+            <div class="hint">
+                <span class="hint-number">5</span>
+                <span class="hint-code">870</span>
+                <span class="hint-text">→ 1つの数字が正解だが位置が違う</span>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">💡 ルール説明</div>
+            <div class="legend-item">・「位置も合っている」＝ 数字と桁の両方が正解</div>
+            <div class="legend-item">・「位置が違う」＝ 数字は正解だが違う桁にある</div>
+        </div>
+
+        <div class="input-section">
+            <div class="code-input">
+                <input type="text" maxlength="1" id="digit1" inputmode="numeric" pattern="[0-9]">
+                <input type="text" maxlength="1" id="digit2" inputmode="numeric" pattern="[0-9]">
+                <input type="text" maxlength="1" id="digit3" inputmode="numeric" pattern="[0-9]">
+            </div>
+            <button class="submit-btn" onclick="checkAnswer()">解答する</button>
+            
+            <div id="result" class="result"></div>
+            <div class="attempts" id="attempts"></div>
+        </div>
+
+        <div class="solution-hint">
+            <button class="hint-btn" onclick="showExtraHint()">ヒントが欲しい...</button>
+            <div id="extraHint" class="extra-hint"></div>
+        </div>
+    </div>
+
+    <script>
+        const ANSWER = "042";
+        let attempts = 0;
+        let hintLevel = 0;
+
+        const hints = [
+            "ヒント4から、7, 3, 8 は正解に含まれないことが確定します",
+            "ヒント1と4を合わせると、6と8は除外されるので、2が正解の1つで位置も合っている（3桁目）",
+            "ヒント2から、6, 1, 4 のどれか1つが正解。6は除外済みなので1か4のどちらか",
+            "ヒント5から0が正解の1つ（8, 7は除外済み）。でも1桁目ではない",
+            "ヒント3から、2, 0, 6 のうち2つが正解で位置違い。6は除外、2は3桁目確定なので、0は1桁目か2桁目"
+        ];
+
+        // Auto-focus and move to next input
+        document.querySelectorAll('.code-input input').forEach((input, index, inputs) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        });
+
+        function checkAnswer() {
+            const d1 = document.getElementById('digit1').value;
+            const d2 = document.getElementById('digit2').value;
+            const d3 = document.getElementById('digit3').value;
+            
+            if (!d1 || !d2 || !d3) {
+                showResult('3桁すべて入力してください', false);
+                return;
+            }
+
+            const userAnswer = d1 + d2 + d3;
+            attempts++;
+
+            if (userAnswer === ANSWER) {
+                showResult('🎉 正解！おめでとうございます！', true);
+                createConfetti();
+            } else {
+                showResult('❌ 不正解... もう一度考えてみよう', false);
+            }
+
+            document.getElementById('attempts').textContent = `挑戦回数: ${attempts}回`;
+        }
+
+        function showResult(message, isCorrect) {
+            const result = document.getElementById('result');
+            result.textContent = message;
+            result.className = 'result ' + (isCorrect ? 'correct' : 'wrong');
+        }
+
+        function showExtraHint() {
+            const extraHint = document.getElementById('extraHint');
+            if (hintLevel < hints.length) {
+                extraHint.textContent = hints[hintLevel];
+                extraHint.style.display = 'block';
+                hintLevel++;
+            } else {
+                extraHint.textContent = '💡 これ以上のヒントはありません。答えは0から始まります...';
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#e94560', '#ffd700', '#00ff00', '#00bfff', '#ff69b4'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Focus first input on load
+        document.getElementById('digit1').focus();
+    </script>
+</body>
+</html>
